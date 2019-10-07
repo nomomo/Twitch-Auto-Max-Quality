@@ -3,7 +3,7 @@
 // @namespace   Twitch-Auto-Max-Quality
 // @version     0.0.1
 // @author      Nomo
-// @description Fun always max quality on Twitch.tv
+// @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
 // @homepage https://github.com/nomomo/Twitch-Auto-Max-Quality/
 // @downloadURL https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js
@@ -1101,7 +1101,7 @@
                 var errorText = $elem.text();
                 NOMO_DEBUG("pl_error 생성됨", errorText);
                 if (errorText.indexOf("#")) {
-                    $elem.html(errorText + "<br />1초후 자동 새로고침");
+                    $elem.html(errorText + "<br />Refresh after 1s");
                     setTimeout(function () {
                         // player.twitch.tv 의 경우
                         if (is_player && unsafeWindow.player !== undefined) {
@@ -1136,7 +1136,7 @@
     // 설정 메뉴 추가 및 관리
     var GM_Setting_Bootstrap = 'GM_Setting_Bootstrap';
     if (typeof GM_registerMenuCommand === "function") {
-        GM_registerMenuCommand("설정 열기", function () {
+        GM_registerMenuCommand("Open Settings Menu", function () {
             $("#nomo_settings_container").remove();
 
             var $container = $( /*html*/ `
@@ -1144,14 +1144,12 @@
                 <div id="nomo_settings" style="cursor:default;font-size:12px;max-width:800px;max-height:90%;margin:20px auto;background:#fff;padding:10px 20px;border-radius:5px;"></div>
             </div>`).appendTo("body");
             $container.on("click", function () {
-                NOMO_DEBUG("바깥 클릭됨");
                 $(this).fadeOut(500, function () {
                     $(this).remove();
                     $("#GM_Setting_Bootstrap").remove();
                 });
             });
             $container.find("#nomo_settings").on("click", function (e) {
-                NOMO_DEBUG("안쪽 클릭됨");
                 e.stopPropagation();
             });
 
