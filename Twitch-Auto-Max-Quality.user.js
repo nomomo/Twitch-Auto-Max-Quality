@@ -138,7 +138,7 @@
                 category: "general",
                 depth: 1,
                 type: "checkbox",
-                value: true,
+                value: false,
                 title: "Automatic restart on error (under dev.)",
                 desc: "Ex) # 2000"
             }
