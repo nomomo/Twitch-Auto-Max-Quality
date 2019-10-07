@@ -123,7 +123,7 @@
                 depth: 2,
                 type: "checkbox",
                 value: false,
-                title: "Use for video where url starts with blob only",
+                title: "Use for live video where url starts with blob",
                 desc: "Turn this function on when the video quality is set to forcibly low in vod, clip, etc."
             },
             // max_quality_page_change: {
