@@ -17,5 +17,7 @@
 nomotg@gmail.com
 
 ## Change log
+### 0.0.2 (2019-10-17)
+- Modified to apply to the new layout of the Twitch.
 ### 0.0.1 (2019-10-07)
 - Initial commit

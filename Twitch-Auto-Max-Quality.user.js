@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.1
+// @version     0.0.2
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -865,7 +865,11 @@
             font-size:14px;
         }
 
-        body.pl-menu-hide div.pl-menu, body.pl-menu-hide .pl-settings-icon{
+        body.pl-menu-hide div.pl-menu,
+        body.pl-menu-hide .pl-settings-icon,
+        body.pl-menu-hide button[data-a-target='player-settings-button'],
+        body.pl-menu-hide div[data-a-target='player-settings-menu'],
+        body.pl-menu-hide div.settings-menu-button-component{
             display:none;
             opacity:0;
         }
@@ -931,15 +935,26 @@
 
     // 시작 시 항상 최고 화질로 시작
     try {
+        var setting_elem_selector = "button[data-a-target='player-settings-button']";
+        var quality_elem_selector = "button[data-a-target='player-settings-menu-item-quality']";
+        var max_quality_elem_selector = "input[data-a-target='tw-radio']";//".tw-block.tw-radio__label";//"div[data-a-target='player-settings-submenu-quality-option']";
+        var menu_elem_selector = "div[data-a-target='player-settings-menu']";
+        if(document.location.href.indexOf("player.twitch.tv") !== -1){
+            setting_elem_selector = ".pl-settings-icon";
+            quality_elem_selector = ".qa-quality-button";
+            max_quality_elem_selector = ".pl-quality-option-button";
+            menu_elem_selector = ".pl-menu";
+        }
+
         if (GM_SETTINGS.max_quality_start) {
             var use_qob = true;
             var SETTIMEOUT_PL_MENU = undefined;
             // 5초 동안 대기 후 실패 시 unbind
             var video_quality_unbind = function () {
                 setTimeout(function () {
-                    $(document).unbindArrive(".pl-settings-icon");
-                    $(document).unbindArrive(".qa-quality-button");
-                    $(document).unbindArrive(".pl-quality-option-button");
+                    $(document).unbindArrive(setting_elem_selector);
+                    $(document).unbindArrive(quality_elem_selector);
+                    $(document).unbindArrive(max_quality_elem_selector);
                 }, 1);
             };
             var PL_MENU_SHOW_DELAY = function () {
@@ -950,6 +965,12 @@
                     NOMO_DEBUG("5초 경과하여 자동 해제됨");
                 }, 5000);
             };
+
+            if (GM_SETTINGS.max_quality_localstorage) {
+                var date_n = "" + Number(new Date());
+                localStorage.setItem('video-quality', '{"default":"chunked"}');
+                localStorage.setItem('s-qs-ts', date_n);
+            }
 
             // Video Player 가 감지되거나, src 값이 바뀌면 화질 설정
             new MutationObserver(function (mutations) {
@@ -981,44 +1002,47 @@
                                     PL_MENU_SHOW_DELAY();
 
                                     // 이미 메뉴 존재 시
-                                    if ($("div.pl-menu").length !== 0) {
+                                    if ($(menu_elem_selector).length !== 0) {
                                         NOMO_DEBUG("이미 메뉴 존재");
-                                        $("span.pl-settings-icon").click();
+                                        $(setting_elem_selector).click();
                                     }
 
                                     // 설정 버튼 클릭
-                                    $(document).arrive(".pl-settings-icon", {
+                                    $(document).arrive(setting_elem_selector, {
                                         onlyOnce: true,
                                         existing: true
                                     }, function () {
                                         NOMO_DEBUG("ARRIVE FIRED 1");
                                         video_quality_unbind();
                                         use_qob = true;
-                                        $("span.pl-settings-icon").click();
+                                        $(this).click();
 
                                         PL_MENU_SHOW_DELAY();
                                         // 화질 버튼 클릭
-                                        $(document).arrive(".qa-quality-button", {
+                                        $(document).arrive(quality_elem_selector, {
                                             onlyOnce: true,
                                             existing: true
                                         }, function () {
                                             NOMO_DEBUG("ARRIVE FIRED 2");
                                             video_quality_unbind();
-                                            $(".qa-quality-button").click();
+                                            $(this).click();
 
                                             PL_MENU_SHOW_DELAY();
                                             // source 버튼 클릭
-                                            $(document).arrive(".pl-quality-option-button", {
+                                            $(document).arrive(max_quality_elem_selector, {
                                                 onlyOnce: true,
                                                 existing: true
                                             }, function () {
                                                 NOMO_DEBUG("ARRIVE FIRED 3");
                                                 video_quality_unbind();
-                                                var $qb = $(".pl-quality-option-button");
+                                                var $qb = $(max_quality_elem_selector);
                                                 if (use_qob && $qb.length > 2) {
                                                     use_qob = false;
                                                     NOMO_DEBUG("qb", $qb);
-                                                    $(".pl-quality-option-button")[1].click();
+                                                    $(max_quality_elem_selector)[1].click();
+                                                    if($(menu_elem_selector).length > 0){
+                                                        $(setting_elem_selector).click();
+                                                    }
                                                     clearTimeout(SETTIMEOUT_PL_MENU);
                                                     $("body").removeClass("pl-menu-hide");
                                                     video_quality_unbind();
