@@ -17,6 +17,11 @@
 nomotg@gmail.com
 
 ## Change log
+### 0.0.4 (2019-11-15)
+- Occasionally, video quality is fixed at 720p when watching live with the embed player. In this case, the script will automatically pause the video and try to play again quickly.
+### 0.0.3 (2019-10-23)
+- This script will be disabled when users watch squad streaming. (This script does not currently support squad streaming page)
+- Initial delay (500 ms) is applied when the video quality setting menu is clicked virtually. This will prevent the problem caused by trying to change the video quality too quickly.
 ### 0.0.2 (2019-10-17)
 - Modified to apply to the new layout of the Twitch.
 ### 0.0.1 (2019-10-07)

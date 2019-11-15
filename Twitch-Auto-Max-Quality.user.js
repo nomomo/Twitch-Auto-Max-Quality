@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.2
+// @version     0.0.4
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -828,7 +828,6 @@
     var first_url = document.location.href.toLowerCase();
     var is_player = (first_url.indexOf("player.twitch.tv") !== -1 ? true : false);
     var date_n = Number(new Date());
-    var fixer_on = false;
 
     GM.addStyle(`
         #nomo_settings {
@@ -951,6 +950,9 @@
         if (GM_SETTINGS.max_quality_start) {
             var use_qob = true;
             var SETTIMEOUT_PL_MENU = undefined;
+            const MEUN_TRIGGER_DELAY = 500;
+            var prev_qu_time = Number(new Date());
+
             // 5초 동안 대기 후 실패 시 unbind
             var video_quality_unbind = function () {
                 setTimeout(function () {
@@ -977,6 +979,12 @@
             new MutationObserver(function (mutations) {
                 mutations.some(function (mutation) {
                     if (mutation.target.nodeName.toLowerCase() === "video" && mutation.type === 'attributes' && mutation.attributeName === 'src') {
+                        // 이전 mutation 시간과의 시간 비교
+                        var curr_qu_time = Number(new Date());
+                        var mutation_duration = curr_qu_time - prev_qu_time;
+                        prev_qu_time = curr_qu_time;
+                        NOMO_DEBUG("mutation delay: ", mutation_duration/1000, " s");
+
                         NOMO_DEBUG('Old src: ', mutation.oldValue, 'New src: ', mutation.target.src, mutation);
                         if (mutation.target.src !== undefined &&
                             mutation.target.src !== null &&
@@ -995,66 +1003,90 @@
 
                                 // click event
                                 if (GM_SETTINGS.max_quality_menu_trigger) {
-                                    video_quality_unbind();
-                                    clearTimeout(SETTIMEOUT_PL_MENU);
-
-                                    $("body").addClass("pl-menu-hide");
-                                    PL_MENU_SHOW_DELAY();
-
-                                    // 이미 메뉴 존재 시
-                                    if ($(menu_elem_selector).length !== 0) {
-                                        NOMO_DEBUG("이미 메뉴 존재");
-                                        $(setting_elem_selector).click();
+                                    // 스쿼드 스트리밍일 경우 현재 지원하지 않음
+                                    if(/https?:\/\/(?:www\.)?twitch\.tv\/[a-zA-Z0-9-_]+\/squad$/.test(document.location.href)){
+                                        NOMO_DEBUG("스쿼드 스트리밍은 현재 지원하지 않음");
+                                        return;
                                     }
 
-                                    // 설정 버튼 클릭
-                                    $(document).arrive(setting_elem_selector, {
-                                        onlyOnce: true,
-                                        existing: true
-                                    }, function () {
-                                        NOMO_DEBUG("ARRIVE FIRED 1");
+                                    setTimeout(function(){
                                         video_quality_unbind();
-                                        use_qob = true;
-                                        $(this).click();
+                                        clearTimeout(SETTIMEOUT_PL_MENU);
 
+                                        $("body").addClass("pl-menu-hide");
                                         PL_MENU_SHOW_DELAY();
-                                        // 화질 버튼 클릭
-                                        $(document).arrive(quality_elem_selector, {
+
+                                        // 이미 메뉴 존재 시
+                                        if ($(menu_elem_selector).length !== 0) {
+                                            NOMO_DEBUG("이미 메뉴 존재");
+                                            $(setting_elem_selector).click();
+                                        }
+
+                                        // 설정 버튼 클릭
+                                        $(document).arrive(setting_elem_selector, {
                                             onlyOnce: true,
                                             existing: true
                                         }, function () {
-                                            NOMO_DEBUG("ARRIVE FIRED 2");
+                                            NOMO_DEBUG("ARRIVE FIRED 1");
                                             video_quality_unbind();
+                                            use_qob = true;
                                             $(this).click();
 
                                             PL_MENU_SHOW_DELAY();
-                                            // source 버튼 클릭
-                                            $(document).arrive(max_quality_elem_selector, {
+                                            // 화질 버튼 클릭
+                                            $(document).arrive(quality_elem_selector, {
                                                 onlyOnce: true,
                                                 existing: true
                                             }, function () {
-                                                NOMO_DEBUG("ARRIVE FIRED 3");
+                                                NOMO_DEBUG("ARRIVE FIRED 2");
                                                 video_quality_unbind();
-                                                var $qb = $(max_quality_elem_selector);
-                                                if (use_qob && $qb.length > 2) {
-                                                    use_qob = false;
-                                                    NOMO_DEBUG("qb", $qb);
-                                                    $(max_quality_elem_selector)[1].click();
-                                                    if($(menu_elem_selector).length > 0){
-                                                        $(setting_elem_selector).click();
-                                                    }
-                                                    clearTimeout(SETTIMEOUT_PL_MENU);
-                                                    $("body").removeClass("pl-menu-hide");
-                                                    video_quality_unbind();
-                                                }
-                                            });
+                                                $(this).click();
 
+                                                PL_MENU_SHOW_DELAY();
+                                                // source 버튼 클릭
+                                                $(document).arrive(max_quality_elem_selector, {
+                                                    onlyOnce: true,
+                                                    existing: true
+                                                }, function () {
+                                                    NOMO_DEBUG("ARRIVE FIRED 3");
+                                                    video_quality_unbind();
+                                                    var $qb = $(max_quality_elem_selector);
+                                                    if (use_qob && $qb.length > 2) {
+                                                        use_qob = false;
+                                                        NOMO_DEBUG("qb", $qb);
+                                                        $(max_quality_elem_selector)[1].click();
+                                                        if($(menu_elem_selector).length > 0){
+                                                            $(setting_elem_selector).click();
+                                                        }
+                                                        clearTimeout(SETTIMEOUT_PL_MENU);
+                                                        $("body").removeClass("pl-menu-hide");
+                                                        video_quality_unbind();
+                                                    }
+
+                                                    // 강제 화질 변경 감지
+                                                    setTimeout(function(){
+                                                        var $icon_spin = $(".pl-settings-icon--spin");
+                                                        if($icon_spin.length !== 0){
+                                                            NOMO_DEBUG("강제 화질 변경 감지");
+                                                            var $pause_play_button = $(".qa-pause-play-button");
+                                                            if($pause_play_button.length !== 0){
+                                                                $(".qa-pause-play-button").click();
+                                                                setTimeout(function(){
+                                                                    $(".qa-pause-play-button").click();
+                                                                },50);
+                                                            }
+                                                        }
+                                                    },1000);
+                                                });
+
+                                            });
                                         });
-                                    });
+                                    },MEUN_TRIGGER_DELAY);
                                 }
                             } catch (e) {
                                 NOMO_DEBUG("ERROR FROM video_quality_max", e);
                             }
+
                         }
                         return true;
                     }
