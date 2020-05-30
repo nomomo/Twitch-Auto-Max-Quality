@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.4
+// @version     0.0.5
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -111,6 +111,14 @@
                 value: true,
                 title: "Simulate settings button method",
                 desc: "Try to fix to maximum video quality by virtually clicking the quality setting button & menu. If the player's setting button does not work properly, turn this feature off."
+            },
+            max_quality_menu_trigger_legacy: {
+                category: "general",
+                depth: 3,
+                type: "checkbox",
+                value: false,
+                title: "Use regacy mode",
+                desc: "In May 2020, the structure of the Twitch player inserted as an iframe seems to have changed. So I modified the code to make the script work again. However, there may be users who still use the Twitch Player before it is changed (idk). If 'Simulate settings button method' does not work properly, try turning on this feature."
             },
             max_quality_iframe_twitch: {
                 category: "general",
@@ -940,7 +948,7 @@
         var quality_elem_selector = "button[data-a-target='player-settings-menu-item-quality']";
         var max_quality_elem_selector = "input[data-a-target='tw-radio']";//".tw-block.tw-radio__label";//"div[data-a-target='player-settings-submenu-quality-option']";
         var menu_elem_selector = "div[data-a-target='player-settings-menu']";
-        if(document.location.href.indexOf("player.twitch.tv") !== -1){
+        if(GM_SETTINGS.max_quality_menu_trigger_legacy){
             setting_elem_selector = ".pl-settings-icon";
             quality_elem_selector = ".qa-quality-button";
             max_quality_elem_selector = ".pl-quality-option-button";
