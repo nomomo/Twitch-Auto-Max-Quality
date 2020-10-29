@@ -17,6 +17,11 @@
 nomotg@gmail.com
 
 ## Change log
+### 0.0.6 (2020-10-29)
+- Improved operation when there is only one selectable image quality
+- Initial script operation delay can be set
+### 0.0.5 (2020-05-31)
+- In May 2020, the structure of the Twitch player inserted as an iframe seems to have changed. So I modified the code so that the script works properly again in the Twitch player inserted as an iframe. However, there may be users who still use the old Twitch Player(idk). If 'Simulate settings button method' does not work properly, try turning on "regacy mode" in the settings menu.
 ### 0.0.4 (2019-11-15)
 - Occasionally, video quality is fixed at 720p when watching live with the embed player. In this case, the script will automatically pause the video and try to play again quickly.
 ### 0.0.3 (2019-10-23)
