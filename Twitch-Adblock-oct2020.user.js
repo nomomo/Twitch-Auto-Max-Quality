@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Adblock-oct2020
 // @namespace   Twitch-Adblock-oct2020
-// @version     0.0.2
+// @version     0.0.3
 // @author      Nomo
 // @description Twitch adblock on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -19,11 +19,12 @@
 (async () => {
     // reference: https://gist.github.com/brihawk/df6fa2036c1e8e19cbf45fc0d1ed14fa
 
+    /// twitch-videoad.js
     const origFetch = unsafeWindow.fetch;
     unsafeWindow.fetch = (url, init, ...args) => {
         if (typeof url === "string") {
             if (url.includes("/access_token")) {
-                url = url.replace("player_type=site", "player_type=dashboard");
+                url = url.replace("player_type=site", "player_type=facebook");
             } else if (
                 url.includes("/gql") &&
                 init &&
@@ -31,7 +32,7 @@
                 init.body.includes("PlaybackAccessToken")
             ) {
                 const newBody = JSON.parse(init.body);
-                newBody.variables.playerType = "dashboard";
+                newBody.variables.playerType = "facebook";
                 init.body = JSON.stringify(newBody);
             }
         }
