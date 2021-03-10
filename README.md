@@ -23,6 +23,12 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.0.7 (2021-03-10)
+
+- Removed 'Automatic restart on error' that did not work properly.
+- Fixed jquery https related problem. (Thanks sowind)
+- Added 'Set the volume when stream starts'. (enable it in the settings menu)
+
 ### 0.0.6 (2020-10-29)
 
 - It works better for cases where there is only one video quality.

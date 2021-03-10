@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.6
+// @version     0.0.7
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -10,7 +10,7 @@
 // @updateURL   https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js
 // @include     *://*.twitch.tv/*
 // @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
-// @require     http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // @run-at      document-start
 // @grant       GM.addStyle
 // @grant       GM_addStyle
@@ -145,6 +145,23 @@
                 title: "Use for live video where url starts with blob",
                 desc: "Turn this function on when the video quality is set to forcibly low in vod, clip, etc."
             },
+            set_volume_when_stream_starts: {
+                category: "general",
+                depth: 2,
+                type: "checkbox",
+                value: false,
+                title: "Set the volume when stream starts",
+                desc: "Set the volume when stream starts"
+            },
+            target_start_volume : {
+                category:"general",
+                depth:3,
+                type: "text",
+                value: 1.0,
+                valid:"number",
+                min_value:0.0,
+                max_value:1.0,
+                title:"volume", desc:"(Max Volume: 1.0, Mute: 0.0, Range: 0.0 ~ 1.0)" }
             // max_quality_page_change: {
             //     category: "general",
             //     depth: 2,
@@ -153,14 +170,6 @@
             //     title: "화면 전환 시 매번 최대 화질로 고정 시도",
             //     desc: "페이지 이동, 앞뒤로가기 동작 시에도 최대 화질로 고정합니다. 본 기능을 비활성화 시 첫 접속시에만 최대 화질로 시작합니다."
             // },
-            twitch_error_control: {
-                category: "general",
-                depth: 1,
-                type: "checkbox",
-                value: false,
-                title: "Automatic restart on error (under dev.)",
-                desc: "Ex) # 2000"
-            }
         };
         var settings_init = {};
         var settings = {};
@@ -900,6 +909,15 @@
         }
     `);
 
+    var is_volume_changed = false;
+    if(GM_SETTINGS.set_volume_when_stream_starts){
+        localStorage.setItem('volume', GM_SETTINGS.target_start_volume);
+
+        if(GM_SETTINGS.target_start_volume !== 0){
+            localStorage.setItem('video-muted', {default:false});
+        }
+    }
+
     // 화면 이동 시 화질 저하 무력화
     try {
         if (GM_SETTINGS.disable_visibilitychange) {
@@ -1009,6 +1027,23 @@
                             mutation.target.src.indexOf("clips") === -1 &&
                             (!GM_SETTINGS.max_quality_target_blob || (GM_SETTINGS.max_quality_target_blob && mutation.target.src.indexOf("blob") !== -1))
                         ) {
+                            try {
+                                if(GM_SETTINGS.set_volume_when_stream_starts && !is_volume_changed){
+                                    NOMO_DEBUG("set_volume");
+                                    if(mutation.target.volume !== undefined){
+                                        NOMO_DEBUG("MUTE?", mutation.target.muted, "CURRENT VOLUME", mutation.target.volume, "TARGET VOLUME", GM_SETTINGS.target_start_volume);
+                                        setTimeout(function(){
+                                            if(GM_SETTINGS.target_start_volume !== 0.0){
+                                                mutation.target.muted = false;
+                                            }
+                                            mutation.target.volume = GM_SETTINGS.target_start_volume;
+                                            is_volume_changed = true;
+                                        },100);
+                                    }
+                                }
+                            } catch (e) {
+                                NOMO_DEBUG("ERROR FROM set_volume_when_stream_starts", e);
+                            }
 
                             try {
                                 NOMO_DEBUG("video_quality_max");
@@ -1163,46 +1198,6 @@
         }
     } catch (e) {
         console.log("max_quality_start error", e);
-    }
-
-    // #2000 등의 에러 처리
-    try {
-        if (GM_SETTINGS.twitch_error_control) {
-            $(document).arrive(".pl-error", function (elem) {
-                var $elem = $(elem);
-                var errorText = $elem.text();
-                NOMO_DEBUG("pl_error 생성됨", errorText);
-                if (errorText.indexOf("#")) {
-                    $elem.html(errorText + "<br />Refresh after 1s");
-                    setTimeout(function () {
-                        // player.twitch.tv 의 경우
-                        if (is_player && unsafeWindow.player !== undefined) {
-                            unsafeWindow.player.pause();
-                            unsafeWindow.player.play();
-                        }
-                        // twitch.tv 의 경우
-                        else {
-                            var $play_button = $(".qa-pause-play-button");
-                            if ($play_button.find("#icon_pause").length >= 1) {
-                                // 현재 재생 중임
-                                NOMO_DEBUG("현재 재생 중");
-                                $play_button.click();
-                                $play_button.click();
-                            } else {
-                                // 현재 정지 중임
-                                NOMO_DEBUG("현재 정지 중");
-                                $play_button.click();
-                                $play_button.click();
-                                $play_button.click();
-                            }
-                        }
-                    }, 1000);
-                    // $("button.player-button").trigger("click");
-                }
-            });
-        }
-    } catch (e) {
-        console.log("twitch_error_control error", e);
     }
 
     // 설정 메뉴 추가 및 관리
