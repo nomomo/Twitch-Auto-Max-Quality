@@ -8,7 +8,7 @@
 #### STEP 1. ScriptManager
 
 - Firefox - [Tampermonkey](https://addons.mozilla.org/ko/firefox/addon/tampermonkey/)
-- Chrome - [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ko)
+- Chrome - [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 - Opera - [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/)
 - Safari - [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz)
 - Edge - [Tampermonkey](https://www.microsoft.com/store/p/tampermonkey/9nblggh5162s)
