@@ -25,6 +25,12 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.0.8 (2021-06-05)
+
+- Now again "Simulate settings button method" works fine.
+- You can now set your preferred video quality. (set it in the settings menu)
+- Removed "Regacy mode" of "Simulate settings button method"
+
 ### 0.0.7 (2021-03-10)
 
 - Removed 'Automatic restart on error' that did not work properly.
