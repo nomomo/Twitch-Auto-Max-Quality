@@ -136,7 +136,7 @@
                     type: "checkbox",
                     value: true,
                     title: "Localstorage modify method",
-                    desc: `Modify local storage related to video quality.<br />This feature directly modifies the quality settings stored in Twitch Player, and the settings will be overwritten when Twitch Player loads.<br />When both "Localstorage modify method" and "Simulate settings button method" are turned on, the video quality is mainly set by the "Simulate settings button method."`
+                    desc: `Modify local storage related to video quality.<br />This feature directly modifies the quality settings stored in Twitch Player, and the settings will be overwritten when Twitch Player loads.<br />When both "Localstorage modify method" and "Simulate settings button method" are turned on, the video quality is mainly set by the "Simulate settings button method.<br />This function does not work properly if the script does not have permission to access Localstorage, such as Incognito mode in Google Chrome."`
                 },
                 max_quality_localstorage_prefer_1st : {
                     category:"general",
@@ -941,16 +941,21 @@
     }
 
     function updateLocalStorage(){
-        if (!GM_SETTINGS.max_quality_localstorage) {
-            return;
+        try{
+            if (!GM_SETTINGS.max_quality_localstorage) {
+                return;
+            }
+            var q1st = GM_SETTINGS.max_quality_localstorage_prefer_1st.toLowerCase().trim();
+            if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
+                q1st = "chunked";
+            }
+            
+            localStorage.setItem('video-quality', `{"default":"${q1st}"}`);
+            localStorage.setItem('s-qs-ts', "" + Number(new Date()));
         }
-        var q1st = GM_SETTINGS.max_quality_localstorage_prefer_1st.toLowerCase().trim();
-        if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
-            q1st = "chunked";
+        catch(e){
+            NOMO_DEBUG("updateLocalStorage error", e);
         }
-        
-        localStorage.setItem('video-quality', `{"default":"${q1st}"}`);
-        localStorage.setItem('s-qs-ts', "" + Number(new Date()));
     }
 
     // disable_visibilitychange 화면 이동 시 화질 저하 무력화
@@ -1001,7 +1006,7 @@
             };
         }
     } catch (e) {
-        console.log("disable_visibilitychange error", e);
+        NOMO_DEBUG("disable_visibilitychange error", e);
     }
 
     // 시작 시 항상 최고 화질로 시작
@@ -1272,7 +1277,7 @@
             }
         }
     } catch (e) {
-        console.log("max_quality_start error", e);
+        NOMO_DEBUG("max_quality_start error", e);
     }
 
     // 설정 메뉴 추가 및 관리
