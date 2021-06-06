@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.8
+// @version     0.0.9
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -1064,7 +1064,7 @@
                         mutation.target.src === undefined ||
                         mutation.target.src === null ||
                         mutation.target.src === "" ||
-                        mutation.target.src.indexOf("clips") !== -1 ||
+                        mutation.target.src.indexOf("clip") !== -1 ||
                         (GM_SETTINGS.max_quality_target_blob && mutation.target.src.indexOf("blob") === -1)
                     ){
                         return false;

@@ -25,6 +25,10 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.0.9 (2021-06-07)
+
+- Fixes an issue where the script unintentionally works on some clip pages.
+
 ### 0.0.8 (2021-06-05)
 
 - Now again "Simulate settings button method" works fine.
