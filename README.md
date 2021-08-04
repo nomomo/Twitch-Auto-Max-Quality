@@ -5,7 +5,7 @@
 
 ## Install
 
-#### STEP 1. ScriptManager
+### STEP 1. ScriptManager
 
 - Firefox - [Tampermonkey](https://addons.mozilla.org/ko/firefox/addon/tampermonkey/)
 - Chrome - [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
@@ -15,15 +15,22 @@
 
 This script may not work properly on script managers other than Tampermonkey.
 
-#### STEP 2. UserScript
+### STEP 2. UserScript
 
-- [Install](https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js) from https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js
+- [Install](https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js) from [https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js](https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js)
 
 ## Bug report
 
 nomotg@gmail.com
 
 ## Change log
+
+### 0.1.0 (2021-08-04)
+
+- New feature added: "Only source quality method"
+  - Removes all other selectable video quality except source quality. So even if the Twitch player sets the video quality to "Auto", the only selectable "Source quality" is set.
+  - When this option is enabled, Localstorage modify method and Simulate settings button method are automatically disabled.
+  - Caution: Enabling this option may conflict with other scripts (eg TwitchAdSolution.), causing problems with video playback or the scripts not working properly. Of course, it might work just fine. If you run into problems, setting the \"Position\" to 1 or the last one in \"Settings\" tab of the script settings menu may solve the problem. If that doesn't work, turn this option off.
 
 ### 0.0.9 (2021-06-07)
 

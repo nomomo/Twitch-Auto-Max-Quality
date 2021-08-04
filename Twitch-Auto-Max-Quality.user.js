@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.0.9
+// @version     0.1.0
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -97,13 +97,21 @@
                     title: "Start live video with user-preferred quality",
                     desc: ""
                 },
+                only_source_quality: {
+                    category: "general",
+                    depth: 2,
+                    type: "checkbox",
+                    value: false,
+                    title: "Only source quality method (new!)",
+                    desc: "Removes all other selectable video quality except source quality. So even if the Twitch player sets the video quality to \"Auto\", the only selectable \"Source quality\" is set.<br />If you change this option, you must refresh the web page. When this option is enabled, Localstorage modify method and Simulate settings button method are automatically disabled.<br />Caution: Enabling this option may conflict with other scripts (eg TwitchAdSolution.), causing problems with video playback or the scripts not working properly. Of course, it might work just fine. If you run into problems, setting the \"Position\" to 1 or the last one in \"Settings\" tab of the script settings menu may solve the problem. If that doesn't work, turn this option off."
+                },
                 max_quality_menu_trigger: {
                     category: "general",
                     depth: 2,
                     type: "checkbox",
                     value: true,
                     title: "Simulate settings button method",
-                    desc: "Try to fix to user-preferred video quality by virtually clicking the quality setting button & menu. <br />The script looks for text that corresponds to the user's preferred quality in the quality settings menu. The script will first try to set the \"most preferred video quality\". If the script cannot find the \"most preferred video quality\", the script will look for a \"second preferred video quality\". If the second preferred video quality does not exist, video quality will be selected as the source quality. <br />If the player's setting button does not work properly, turn this feature off."
+                    desc: "Try to fix to user-preferred video quality by virtually clicking the quality setting button & menu. <br />The script looks for text that corresponds to the user's preferred quality in the quality settings menu. The script will first try to set the \"most preferred video quality\". If the script cannot find the \"most preferred video quality\", the script will look for a \"second preferred video quality\". If the second preferred video quality does not exist, video quality will be selected as the source quality. <br />If the player's setting button does not work properly, turn this feature off. Reflesh required"
                 },
                 max_quality_menu_trigger_prefer_1st : {
                     category:"general",
@@ -940,15 +948,155 @@
         }
     }
 
+    // only_source_quality method
+    if(GM_SETTINGS.only_source_quality){
+        var realWorker = unsafeWindow.Worker;
+        unsafeWindow.Worker = function (input) {
+            var newInput = String(input);
+
+            // 19-09-18 wasmworker version: 2.14.0
+            var myBlob = "importScripts('https://static.twitchcdn.net/assets/amazon-ivs-wasmworker.min-7da53ec1e6fb32a92d1d.js');";
+
+            var req = new XMLHttpRequest();
+            req.open('GET', newInput, false);
+            req.send();
+            var resText = req.responseText;
+            if(req.status == 200 || req.status == 201){
+                myBlob = resText;
+            }
+
+            // rewrite blob
+            var workerBlob = new Blob(
+                [ /*javascript*/ `
+                    // ${myBlob};
+                    var DEBUG_WORKER2 = ${DEBUG};
+                    var NOMO_DEBUG = function ( /**/ ) {
+                        if (DEBUG_WORKER2) {
+                            var args = arguments,
+                                args_length = args.length,
+                                args_copy = args;
+                            for (var i = args_length; i > 0; i--) {
+                                args[i] = args_copy[i - 1];
+                            }
+                            args[0] = "[TMWS][WORKER]  ";
+                            args.length = args_length + 1;
+                            console.log.apply(console, args);
+                        }
+                    };
+
+                    // Worker fetch
+                    var originalFetch2 = self.fetch;
+                    self.fetch = async function(input, init){
+                        if(input.toLowerCase().indexOf(".m3u8") !== -1 && input.toLowerCase().indexOf('usher.ttvnw.net/api/channel/hls') !== -1){
+                            var m3u8_fetch = await originalFetch2.apply(this, arguments);
+                            var m3u8_text = await m3u8_fetch.text();
+                            NOMO_DEBUG("\\n", input, "\\n", (new Date()), "\\n", m3u8_text);
+
+                            var type = 0;
+                            var found = false;
+                            if(type == 0){
+                                var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
+                                var mat = m3u8_text.match(regex);
+                                NOMO_DEBUG("mat", mat);
+                                found = mat !== null;
+                                if(found){
+                                    for(var i=1; i<mat.length; ++i){
+                                        m3u8_text = m3u8_text.replace(mat[i], "");
+                                    }
+                                    NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
+                                    var m3u8_blob = new Blob([m3u8_text], {
+                                        type: 'text/plain'
+                                    });
+                                    var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                    var new_arg = arguments;
+                                    new_arg[0] = m3u8_blob_url;
+
+                                    // REVOKE after 10s
+                                    setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url)},10000);
+                                    return originalFetch2.apply(this, new_arg);
+                                }
+                            }
+                            else{
+                                // return with blob
+                                var regexMasterPlaylist = /(https:\\/\\/.+\\.m3u8)/gi;
+                                var masterplaylistmatch = m3u8_text.match(regexMasterPlaylist);
+
+                                var regexBandWidth = /(BANDWIDTH=[0-9]+)/gi;
+                                var bandwidthmatch = m3u8_text.match(regexBandWidth);
+
+                                var regexCodecs = /(CODECS=\\".+\\")/gi;
+                                var codecsmatch = m3u8_text.match(regexCodecs);
+
+                                NOMO_DEBUG("masterplaylistmatch", masterplaylistmatch);
+                                NOMO_DEBUG("bandwidthmatch", bandwidthmatch);
+                                NOMO_DEBUG("codecsmatch", codecsmatch);
+
+                                found = masterplaylistmatch !== null && bandwidthmatch !== null && codecsmatch !== null;
+                                if(found){
+                                    var firstm3u8 = masterplaylistmatch[0];
+                                    m3u8_text = m3u8_text.replace(regexMasterPlaylist,firstm3u8);
+                                    m3u8_text = m3u8_text.replace(regexBandWidth, bandwidthmatch[0]);
+                                    m3u8_text = m3u8_text.replace(regexCodecs, codecsmatch[0]);
+
+                                    NOMO_DEBUG("CONVERTED", m3u8_text);
+                                    var m3u8_blob = new Blob([m3u8_text], {
+                                        type: 'text/plain'
+                                    });
+                                    var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                    var new_arg = arguments;
+                                    new_arg[0] = m3u8_blob_url;
+
+                                    // REVOKE after 10s
+                                    setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url)},10000);
+                                    return originalFetch2.apply(this, new_arg);
+                                }
+                            }
+
+                        }
+
+                        return originalFetch2.apply(this, arguments);
+                    };
+
+                    ${myBlob};
+                `], {
+                    type: 'text/javascript'
+                }
+            );
+            // rewrite blob end
+
+            var workerBlobUrl = URL.createObjectURL(workerBlob);
+            var workerBlobWrapper = new Blob(
+                [ /*javascript*/ `
+                importScripts('${workerBlobUrl}');
+               `], {
+                    type: 'text/javascript'
+                });
+
+            var workerBlobWrapperUrl = URL.createObjectURL(workerBlobWrapper);
+            var my_worker = new realWorker(workerBlobWrapperUrl);
+
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            // Modified Worker
+            ////////////////////////////////////////////////////////////////////////////////////
+            NOMO_DEBUG("my_worker", my_worker);
+            // return worker to original function
+            return my_worker;
+        };
+    }
+
+
     function updateLocalStorage(){
         try{
-            if (!GM_SETTINGS.max_quality_localstorage) {
+            if (!GM_SETTINGS.max_quality_localstorage || GM_SETTINGS.only_source_quality) {
                 return;
             }
             var q1st = GM_SETTINGS.max_quality_localstorage_prefer_1st.toLowerCase().trim();
             if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
                 q1st = "chunked";
             }
+
+            NOMO_DEBUG("updateLocalStorage : ", q1st);
             
             localStorage.setItem('video-quality', `{"default":"${q1st}"}`);
             localStorage.setItem('s-qs-ts', "" + Number(new Date()));
@@ -1101,7 +1249,7 @@
                         updateLocalStorage();
 
                         // max_quality_menu_trigger
-                        if (GM_SETTINGS.max_quality_menu_trigger) {
+                        if (!GM_SETTINGS.only_source_quality && GM_SETTINGS.max_quality_menu_trigger) {
                             // 스쿼드 스트리밍일 경우 현재 지원하지 않음
                             if(/https?:\/\/(?:www\.)?twitch\.tv\/[a-zA-Z0-9-_]+\/squad$/.test(document.location.href)){
                                 NOMO_DEBUG("squad streaming is not supported");
