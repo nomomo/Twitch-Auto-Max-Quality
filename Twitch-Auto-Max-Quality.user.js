@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.1.0
+// @version     0.1.1
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -1429,9 +1429,14 @@
     }
 
     // 설정 메뉴 추가 및 관리
-    var GM_Setting_Bootstrap = 'GM_Setting_Bootstrap';
-    if (typeof GM_registerMenuCommand === "function") {
-        GM_registerMenuCommand("Open Settings Menu", function () {
+    function openSettingsMenu(){
+        try{
+            if(document === undefined){
+                NOMO_DEBUG("Document is undefined from openSettingsMenu");
+                return;
+            }
+            NOMO_DEBUG("msg from openSettingsMenu");
+            var GM_Setting_Bootstrap = 'GM_Setting_Bootstrap';
             $("#nomo_settings_container").remove();
 
             var $container = $( /*html*/ `
@@ -1461,6 +1466,17 @@
 
             $("#nomo_settings_container").fadeIn(500);
             GM_setting.createlayout($("#nomo_settings"));
-        });
+        }
+        catch(e){
+            NOMO_DEBUG("Error from openSettingsMenu function", e);
+        }
     }
+    $(document).ready(function (){
+        NOMO_DEBUG("DOCUMENT_READY");
+        if (typeof GM_registerMenuCommand === "function") {
+            GM_registerMenuCommand("Open Settings Menu", openSettingsMenu);
+        }
+    });
+
+    
 })();
