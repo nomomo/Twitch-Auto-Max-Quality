@@ -1137,7 +1137,7 @@
 
                 if (c == undefined)
                     c = false;
-                this["_addEventListener_" + date_n](a, b, c);
+                unsafeWindow["_addEventListener_" + date_n](a, b, c);
             };
 
             // 3. overwrite document addEventListener
@@ -1150,7 +1150,7 @@
 
                 if (c == undefined)
                     c = false;
-                this["_addEventListener_" + date_n](a, b, c);
+                unsafeWindow["_addEventListener_" + date_n](a, b, c);
             };
         }
     } catch (e) {
