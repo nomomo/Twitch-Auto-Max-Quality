@@ -1110,51 +1110,92 @@
     try {
         if (GM_SETTINGS.disable_visibilitychange) {
             // 1. document object 덮어쓰기
-            Object.defineProperty(document, 'hidden', {
-                value: false,
-                writable: false
-            });
-            Object.defineProperty(document, 'visibilityState', {
-                value: 'visible',
-                writable: false
-            });
-            Object.defineProperty(document, 'webkitVisibilityState', {
-                value: 'visible',
-                writable: false
-            });
-            document.dispatchEvent(new Event('visibilitychange'));
-            document.hasFocus = function () {
-                return true;
-            };
+            try{
+                Object.defineProperty(document, 'hidden', {
+                    value: false,
+                    writable: false
+                });
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - hidden redefine", e);
+            }
+
+            try{
+                Object.defineProperty(document, 'visibilityState', {
+                    value: 'visible',
+                    writable: false
+                });
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - visibilityState redefine", e);
+            }
+
+            try{
+                Object.defineProperty(document, 'webkitVisibilityState', {
+                    value: 'visible',
+                    writable: false
+                });
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - webkitVisibilityState redefine", e);
+            }
+
+            try{
+                document.dispatchEvent(new Event('visibilitychange'));
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - visibilitychange dispatchEvent", e);
+            }
+
+            try{
+                document.hasFocus = function () {
+                    return true;
+                };
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - hasFocus return true", e);
+            }
 
             // 2. overwrite window addEventListener
-            unsafeWindow["_addEventListener_" + date_n] = unsafeWindow.addEventListener;
-            unsafeWindow.addEventListener = function (a, b, c) {
-                if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
-                    // NOMO_DEBUG("player.twitch.tv window 의 visibilitychange 이벤트 무력화", a, b, c);
-                    return;
-                }
+            try{
+                unsafeWindow["_addEventListener_" + date_n] = unsafeWindow.addEventListener;
+                unsafeWindow.addEventListener = function (a, b, c) {
+                    if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
+                        // NOMO_DEBUG("player.twitch.tv window 의 visibilitychange 이벤트 무력화", a, b, c);
+                        return;
+                    }
 
-                if (c == undefined)
-                    c = false;
-                unsafeWindow["_addEventListener_" + date_n](a, b, c);
-            };
+                    if (c == undefined){
+                        c = false;
+                    }
+                    unsafeWindow["_addEventListener_" + date_n](a, b, c);
+                };
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - overwrite window addEventListener", e);
+            }
 
             // 3. overwrite document addEventListener
-            unsafeWindow.document["_addEventListener_" + date_n] = unsafeWindow.document.addEventListener;
-            unsafeWindow.document.addEventListener = function (a, b, c) {
-                if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
-                    // NOMO_DEBUG("player.twitch.tv document 의 visibilitychange 이벤트 무력화", a, b, c);
-                    return;
-                }
+            try{
+                unsafeWindow.document["_addEventListener_" + date_n] = unsafeWindow.document.addEventListener;
+                unsafeWindow.document.addEventListener = function (a, b, c) {
+                    if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
+                        // NOMO_DEBUG("player.twitch.tv document 의 visibilitychange 이벤트 무력화", a, b, c);
+                        return;
+                    }
 
-                if (c == undefined)
-                    c = false;
-                unsafeWindow["_addEventListener_" + date_n](a, b, c);
-            };
+                    if (c == undefined){
+                        c = false;
+                    }
+                    unsafeWindow["_addEventListener_" + date_n](a, b, c);
+                };
+            }
+            catch(e){
+                NOMO_DEBUG("disable_visibilitychange error - overwrite document addEventListener", e);
+            }
         }
     } catch (e) {
-        NOMO_DEBUG("disable_visibilitychange error", e);
+        NOMO_DEBUG("disable_visibilitychange error - unknown", e);
     }
 
     // 시작 시 항상 최고 화질로 시작
