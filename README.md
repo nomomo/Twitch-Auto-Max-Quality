@@ -25,6 +25,11 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.1.1 (2021-09-14)
+
+- Fixed the script not working properly in Violentmonkey.
+- Added exception handling.
+
 ### 0.1.0 (2021-08-04)
 
 - New feature added: "Only source quality method"
