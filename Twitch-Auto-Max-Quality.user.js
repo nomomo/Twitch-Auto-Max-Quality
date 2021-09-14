@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.1.0
+// @version     0.1.1
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -10,7 +10,7 @@
 // @updateURL   https://raw.githubusercontent.com/nomomo/Twitch-Auto-Max-Quality/master/Twitch-Auto-Max-Quality.user.js
 // @include     *://*.twitch.tv/*
 // @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
-// @require     https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js
 // @run-at      document-start
 // @grant       GM.addStyle
 // @grant       GM_addStyle
@@ -1107,27 +1107,57 @@
     }
 
     // disable_visibilitychange 화면 이동 시 화질 저하 무력화
-    try {
-        if (GM_SETTINGS.disable_visibilitychange) {
-            // 1. document object 덮어쓰기
+    if (GM_SETTINGS.disable_visibilitychange) {
+        NOMO_DEBUG("GM_SETTINGS.disable_visibilitychange: true");
+        // 1. document object 덮어쓰기
+        try{
             Object.defineProperty(document, 'hidden', {
                 value: false,
                 writable: false
             });
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - hidden redefine", e);
+        }
+
+        try{
             Object.defineProperty(document, 'visibilityState', {
                 value: 'visible',
                 writable: false
             });
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - visibilityState redefine", e);
+        }
+
+        try{
             Object.defineProperty(document, 'webkitVisibilityState', {
                 value: 'visible',
                 writable: false
             });
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - webkitVisibilityState redefine", e);
+        }
+
+        try{
             document.dispatchEvent(new Event('visibilitychange'));
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - visibilitychange dispatchEvent", e);
+        }
+
+        try{
             document.hasFocus = function () {
                 return true;
             };
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - hasFocus return true", e);
+        }
 
-            // 2. overwrite window addEventListener
+        // 2. overwrite window addEventListener
+        try{
             unsafeWindow["_addEventListener_" + date_n] = unsafeWindow.addEventListener;
             unsafeWindow.addEventListener = function (a, b, c) {
                 if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
@@ -1135,12 +1165,18 @@
                     return;
                 }
 
-                if (c == undefined)
+                if (c == undefined){
                     c = false;
-                this["_addEventListener_" + date_n](a, b, c);
+                }
+                unsafeWindow["_addEventListener_" + date_n](a, b, c);
             };
+        }
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - overwrite window addEventListener", e);
+        }
 
-            // 3. overwrite document addEventListener
+        // 3. overwrite document addEventListener
+        try{
             unsafeWindow.document["_addEventListener_" + date_n] = unsafeWindow.document.addEventListener;
             unsafeWindow.document.addEventListener = function (a, b, c) {
                 if (a === "visibilitychange" || a === "blur" || a === "webkitvisibilitychange") {
@@ -1148,13 +1184,15 @@
                     return;
                 }
 
-                if (c == undefined)
+                if (c == undefined){
                     c = false;
-                this["_addEventListener_" + date_n](a, b, c);
+                }
+                unsafeWindow["_addEventListener_" + date_n](a, b, c);
             };
         }
-    } catch (e) {
-        NOMO_DEBUG("disable_visibilitychange error", e);
+        catch(e){
+            NOMO_DEBUG("disable_visibilitychange error - overwrite document addEventListener", e);
+        }
     }
 
     // 시작 시 항상 최고 화질로 시작
@@ -1429,9 +1467,14 @@
     }
 
     // 설정 메뉴 추가 및 관리
-    var GM_Setting_Bootstrap = 'GM_Setting_Bootstrap';
-    if (typeof GM_registerMenuCommand === "function") {
-        GM_registerMenuCommand("Open Settings Menu", function () {
+    function openSettingsMenu(){
+        try{
+            if(document === undefined){
+                NOMO_DEBUG("Document is undefined from openSettingsMenu");
+                return;
+            }
+            NOMO_DEBUG("msg from openSettingsMenu");
+            var GM_Setting_Bootstrap = 'GM_Setting_Bootstrap';
             $("#nomo_settings_container").remove();
 
             var $container = $( /*html*/ `
@@ -1461,6 +1504,17 @@
 
             $("#nomo_settings_container").fadeIn(500);
             GM_setting.createlayout($("#nomo_settings"));
-        });
+        }
+        catch(e){
+            NOMO_DEBUG("Error from openSettingsMenu function", e);
+        }
     }
+    $(document).ready(function (){
+        NOMO_DEBUG("DOCUMENT_READY");
+        if (typeof GM_registerMenuCommand === "function") {
+            GM_registerMenuCommand("Open Settings Menu", openSettingsMenu);
+        }
+    });
+
+    
 })();
