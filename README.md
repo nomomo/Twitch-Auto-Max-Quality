@@ -25,8 +25,6 @@ nomotg@gmail.com
 
 ## Change log
 
-<<<<<<< Updated upstream
-=======
 ### 0.1.2 (2021-09-15)
 
 - Fixed an issue related to the timeline of VOD (Thanks MonkeyDMax92)
@@ -36,7 +34,6 @@ nomotg@gmail.com
 - Fixed the script not working properly in Violentmonkey.
 - Added exception handling.
 
->>>>>>> Stashed changes
 ### 0.1.0 (2021-08-04)
 
 - New feature added: "Only source quality method"
