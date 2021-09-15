@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.1.1
+// @version     0.1.2
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -1187,7 +1187,7 @@
                 if (c == undefined){
                     c = false;
                 }
-                unsafeWindow["_addEventListener_" + date_n](a, b, c);
+                unsafeWindow.document["_addEventListener_" + date_n](a, b, c);
             };
         }
         catch(e){
