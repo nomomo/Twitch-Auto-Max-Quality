@@ -25,6 +25,10 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.1.2 (2021-09-15)
+
+- Fixed an issue related to the timeline of VOD (Thanks MonkeyDMax92)
+
 ### 0.1.1 (2021-09-14)
 
 - Fixed the script not working properly in Violentmonkey.
