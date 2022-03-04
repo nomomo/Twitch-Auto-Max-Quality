@@ -25,6 +25,13 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.2.0 (2022-03-04)
+
+- Now "Only source quality method" works on the VOD page as well.
+- New feature added: "Apply \'Only source quality method\' to the clip page"
+- Removed "Use the Twitch EMBED API in an Iframe" and "Use for live video where url starts with blob" options.
+- Korean language is supported in the settings menu. You can select English and Korean(한국어) from the setting menu.
+
 ### 0.1.2 (2021-09-15)
 
 - Fixed an issue related to the timeline of VOD (Thanks MonkeyDMax92)
