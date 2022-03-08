@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.2.0
+// @version     0.2.1
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -65,6 +65,25 @@
     // eslint-disable-next-line no-cond-assign
     const Arrive = function(e,t,n){"use strict";function r(e,t,n){l.addMethod(t,n,e.unbindEvent),l.addMethod(t,n,e.unbindEventWithSelectorOrCallback),l.addMethod(t,n,e.unbindEventWithSelectorAndCallback);}function i(e){e.arrive=f.bindEvent,r(f,e,"unbindArrive"),e.leave=d.bindEvent,r(d,e,"unbindLeave");}if(e.MutationObserver&&"undefined"!=typeof HTMLElement){var o=0,l=function(){var t=HTMLElement.prototype.matches||HTMLElement.prototype.webkitMatchesSelector||HTMLElement.prototype.mozMatchesSelector||HTMLElement.prototype.msMatchesSelector;return{matchesSelector:function(e,n){return e instanceof HTMLElement&&t.call(e,n);},addMethod:function(e,t,r){var i=e[t];e[t]=function(){return r.length==arguments.length?r.apply(this,arguments):"function"==typeof i?i.apply(this,arguments):n;};},callCallbacks:function(e,t){t&&t.options.onceOnly&&1==t.firedElems.length&&(e=[e[0]]);for(var n,r=0;n=e[r];r++)n&&n.callback&&n.callback.call(n.elem,n.elem);t&&t.options.onceOnly&&1==t.firedElems.length&&t.me.unbindEventWithSelectorAndCallback.call(t.target,t.selector,t.callback);},checkChildNodesRecursively:function(e,t,n,r){for(var i,o=0;i=e[o];o++)n(i,t,r)&&r.push({callback:t.callback,elem:i}),i.childNodes.length>0&&l.checkChildNodesRecursively(i.childNodes,t,n,r);},mergeArrays:function(e,t){var n,r={};for(n in e)e.hasOwnProperty(n)&&(r[n]=e[n]);for(n in t)t.hasOwnProperty(n)&&(r[n]=t[n]);return r;},toElementsArray:function(t){return n===t||"number"==typeof t.length&&t!==e||(t=[t]),t;}};}(),c=function(){var e=function(){this._eventsBucket=[],this._beforeAdding=null,this._beforeRemoving=null;};return e.prototype.addEvent=function(e,t,n,r){var i={target:e,selector:t,options:n,callback:r,firedElems:[]};return this._beforeAdding&&this._beforeAdding(i),this._eventsBucket.push(i),i;},e.prototype.removeEvent=function(e){for(var t,n=this._eventsBucket.length-1;t=this._eventsBucket[n];n--)if(e(t)){this._beforeRemoving&&this._beforeRemoving(t);var r=this._eventsBucket.splice(n,1);r&&r.length&&(r[0].callback=null);}},e.prototype.beforeAdding=function(e){this._beforeAdding=e;},e.prototype.beforeRemoving=function(e){this._beforeRemoving=e;},e;}(),a=function(t,r){var i=new c,o=this,a={fireOnAttributesModification:!1};return i.beforeAdding(function(n){var i,l=n.target;(l===e.document||l===e)&&(l=document.getElementsByTagName("html")[0]),i=new MutationObserver(function(e){r.call(this,e,n);});var c=t(n.options);i.observe(l,c),n.observer=i,n.me=o;}),i.beforeRemoving(function(e){e.observer.disconnect();}),this.bindEvent=function(e,t,n){t=l.mergeArrays(a,t);for(var r=l.toElementsArray(this),o=0;o<r.length;o++)i.addEvent(r[o],e,t,n);},this.unbindEvent=function(){var e=l.toElementsArray(this);i.removeEvent(function(t){for(var r=0;r<e.length;r++)if(this===n||t.target===e[r])return!0;return!1;});},this.unbindEventWithSelectorOrCallback=function(e){var t,r=l.toElementsArray(this),o=e;t="function"==typeof e?function(e){for(var t=0;t<r.length;t++)if((this===n||e.target===r[t])&&e.callback===o)return!0;return!1;}:function(t){for(var i=0;i<r.length;i++)if((this===n||t.target===r[i])&&t.selector===e)return!0;return!1;},i.removeEvent(t);},this.unbindEventWithSelectorAndCallback=function(e,t){var r=l.toElementsArray(this);i.removeEvent(function(i){for(var o=0;o<r.length;o++)if((this===n||i.target===r[o])&&i.selector===e&&i.callback===t)return!0;return!1;});},this;},s=function(){function e(e){var t={attributes:!1,childList:!0,subtree:!0};return e.fireOnAttributesModification&&(t.attributes=!0),t;}function t(e,t){e.forEach(function(e){var n=e.addedNodes,i=e.target,o=[];null!==n&&n.length>0?l.checkChildNodesRecursively(n,t,r,o):"attributes"===e.type&&r(i,t,o)&&o.push({callback:t.callback,elem:i}),l.callCallbacks(o,t);});}function r(e,t){return l.matchesSelector(e,t.selector)&&(e._id===n&&(e._id=o++),-1==t.firedElems.indexOf(e._id))?(t.firedElems.push(e._id),!0):!1;}var i={fireOnAttributesModification:!1,onceOnly:!1,existing:!1};f=new a(e,t);var c=f.bindEvent;return f.bindEvent=function(e,t,r){n===r?(r=t,t=i):t=l.mergeArrays(i,t);var o=l.toElementsArray(this);if(t.existing){for(var a=[],s=0;s<o.length;s++)for(var u=o[s].querySelectorAll(e),f=0;f<u.length;f++)a.push({callback:r,elem:u[f]});if(t.onceOnly&&a.length)return r.call(a[0].elem,a[0].elem);setTimeout(l.callCallbacks,1,a);}c.call(this,e,t,r);},f;},u=function(){function e(){var e={childList:!0,subtree:!0};return e;}function t(e,t){e.forEach(function(e){var n=e.removedNodes,i=[];null!==n&&n.length>0&&l.checkChildNodesRecursively(n,t,r,i),l.callCallbacks(i,t);});}function r(e,t){return l.matchesSelector(e,t.selector);}var i={};d=new a(e,t);var o=d.bindEvent;return d.bindEvent=function(e,t,r){n===r?(r=t,t=i):t=l.mergeArrays(i,t),o.call(this,e,t,r);},d;},f=new s,d=new u;t&&i(t.fn),i(HTMLElement.prototype),i(NodeList.prototype),i(HTMLCollection.prototype),i(HTMLDocument.prototype),i(Window.prototype);var h={};return r(f,h,"unbindAllArrive"),r(d,h,"unbindAllLeave"),h;}}(window,"undefined"==typeof jQuery?null:jQuery,void 0);
     
+    /* HackTimer.js by turuslan
+    * v1.1.0
+    * https://github.com/turuslan/HackTimer
+    * MIT licensed
+    */
+    // eslint-disable-next-line no-cond-assign
+    var HackTimerWorker_min_js, HackTimerWorker_min_js_blob;
+    const disableJavascriptTimer = function() {
+        if(unsafeWindow["TAMQuseHackTimer"] !== undefined){
+            return;
+        }
+        unsafeWindow["TAMQuseHackTimer"] = true;
+        HackTimerWorker_min_js = `var f={},p=postMessage,r='hasOwnProperty';onmessage=function(e){var d=e.data,i=d.i,t=d[r]('t')?d.t:0;switch(d.n){case'a':f[i]=setInterval(function(){p(i)},t);break;case'b':if(f[r](i)){clearInterval(f[i]);delete f[i]}break;case'c':f[i]=setTimeout(function(){p(i);if(f[r](i))delete f[i]},t);break;case'd':if(f[r](i)){clearTimeout(f[i]);delete f[i]}break}}`;
+        HackTimerWorker_min_js_blob = new Blob([HackTimerWorker_min_js], {type: 'application/javascript'});
+
+        // eslint-disable-next-line no-cond-assign
+        // eslint-disable-next-line no-empty
+        (function(s){var w,f={},o=window,l=console,m=Math,z='postMessage',p=0,r='hasOwnProperty',y=[].slice,x='fail',v=o.Worker;function d(){do{p=0x7FFFFFFF>p?p+1:0;}while(f[r](p));return p;}if(!/MSIE 10/i.test(navigator.userAgent)){try{s=o.URL.createObjectURL(new Blob(["var f={},p=postMessage,r='hasOwnProperty';onmessage=function(e){var d=e.data,i=d.i,t=d[r]('t')?d.t:0;switch(d.n){case'a':f[i]=setInterval(function(){p(i)},t);break;case'b':if(f[r](i)){clearInterval(f[i]);delete f[i]}break;case'c':f[i]=setTimeout(function(){p(i);if(f[r](i))delete f[i]},t);break;case'd':if(f[r](i)){clearTimeout(f[i]);delete f[i]}break}}"]));}catch(e){}}if(typeof(v)!=='undefined'){try{w=new v(s);o.setInterval=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2)};w[z]({n:'a',i:i,t:t});return i;};o.clearInterval=function(i){if(f[r](i))delete f[i],w[z]({n:'b',i:i});};o.setTimeout=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2),t:!0};w[z]({n:'c',i:i,t:t});return i;};o.clearTimeout=function(i){if(f[r](i))delete f[i],w[z]({n:'d',i:i});};w.onmessage=function(e){var i=e.data,c,n;if(f[r](i)){n=f[i];c=n.c;if(n[r]('t'))delete f[i];}if(typeof(c)=='string')try{c=new Function(c);}catch(k){}if(typeof(c)=='function')c.apply(o,n.p);};}catch(e){l.log(x);}}else l.log(x);})(HackTimerWorker_min_js_blob);//('HackTimerWorker.min.js');
+    };
 
     /* GM_setting.js
     * Version: Mar. 4, 2022
@@ -164,7 +183,13 @@
         target_start_volume : {
             category:"general", depth:3, type: "text", value: 1.0, valid:"number", min_value:0.0, max_value:1.0,
             title:{en:"Volume", ko:"Volume"},
-            desc:{en:"(Max Volume: 1.0, Mute: 0.0, Range: 0.0 ~ 1.0)", ko:"(Max Volume: 1.0, 음소거: 0.0, 범위: 0.0 ~ 1.0)"} }
+            desc:{en:"(Max Volume: 1.0, Mute: 0.0, Range: 0.0 ~ 1.0)", ko:"(Max Volume: 1.0, 음소거: 0.0, 범위: 0.0 ~ 1.0)"} },
+        disable_javascript_timer: {
+            category: "TAMQLabs",  category_name: "TAMQ Labs", depth: 1, type: "checkbox", value: false,
+            title: {en:"Disable power saving for inactive tabs (Disable JavaScript Timer Throttling)", ko:"비활성 탭의 절전 기능 비활성화 (Disable JavaScript Timer Throttling)"},
+            desc: {en:"If you often have problems playing videos in inactive tabs, try using this feature.<br />By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers. You must refresh the page after changing this option.", 
+                    ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
+        },
     };
     window.GM_setting = GM_setting;
     await GM_setting.init("GM_SETTINGS", {"DEBUG":DEBUG, "SETTINGS":_settings, "CONSOLE_MSG":NOMO_DEBUG, "MULTILANG":true});
@@ -200,6 +225,35 @@
         #GM_setting .GM_setting_depth3 .GM_setting_list_head{ width: 440px !important; }
     `);
 
+    ////////////////////////////////////////////////////////////////////////////////////
+    // disable_javascript_timer
+    if(GM_SETTINGS.disable_javascript_timer){
+        disableJavascriptTimer();
+    }
+    var debugHackTimer = false;
+    var startDate = new Date();
+    var countSettimeout = 0, countSetInterval = 0;
+    if(debugHackTimer){
+        (function(){
+            setTimeout(function(){
+                countSettimeout += 1;
+                setTimeoutDebug();
+                if(countSettimeout % 10 == 0){
+                    var IDEALCOUNT = (Number(new Date()) - Number(startDate)) / 1000;
+                    console.log(`setTimeoutDebug::::: IDEAL COUNT = ${IDEALCOUNT.toFixed(2)}\tCURRENT COUNT = ${countSettimeout}\tERROR = ${(IDEALCOUNT - countSettimeout).toFixed(2)}\tdocument.hidden = ${document.hidden}\tdocument.visibilityState = ${document.visibilityState}`);
+                }
+            },1000);
+        })();
+        (function(){
+            setInterval(function(){
+                countSetInterval += 1;
+                if(countSetInterval % 10 == 0){
+                    var IDEALCOUNT = (Number(new Date()) - Number(startDate)) / 1000;
+                    console.log(`setIntervalDebug:::: IDEAL COUNT = ${IDEALCOUNT.toFixed(2)}\tCURRENT COUNT = ${countSetInterval}\tERROR = ${(IDEALCOUNT - countSetInterval).toFixed(2)}\tdocument.hidden = ${document.hidden}\tdocument.visibilityState = ${document.visibilityState}`);
+                }
+            },1000);
+        })();
+    }
     
     ////////////////////////////////////////////////////////////////////////////////////
     // set_volume_when_stream_starts

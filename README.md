@@ -1,5 +1,10 @@
 # Twitch-Auto-Max-Quality
 
+<!--
+[![ko](https://img.shields.io/badge/lang-ko--kr-green.svg)](https://github.com/nomomo/Twitch-Auto-Max-Quality/blob/master/README.ko.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/nomomo/Twitch-Auto-Max-Quality/blob/master/README.md)
+-->
+
 - Always start playing live video with source quality on twitch.tv.
 - Prevent automatic change of video quality when tab is disabled.
 
@@ -24,6 +29,12 @@ This script may not work properly on script managers other than Tampermonkey.
 nomotg@gmail.com
 
 ## Change log
+
+### 0.2.1 (2022-03-09)
+
+- New TAMQ Labs feature: "Disable power saving for inactive tabs (Disable JavaScript Timer Throttling)"
+  - If you often have problems playing videos in inactive tabs, try using this feature.
+  - By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers.
 
 ### 0.2.0 (2022-03-04)
 
