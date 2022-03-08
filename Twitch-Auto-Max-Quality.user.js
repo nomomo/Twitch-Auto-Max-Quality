@@ -234,7 +234,7 @@
     var startDate = new Date();
     var countSettimeout = 0, countSetInterval = 0;
     if(debugHackTimer){
-        (function(){
+        var setTimeoutDebug = function(){
             setTimeout(function(){
                 countSettimeout += 1;
                 setTimeoutDebug();
@@ -243,7 +243,8 @@
                     console.log(`setTimeoutDebug::::: IDEAL COUNT = ${IDEALCOUNT.toFixed(2)}\tCURRENT COUNT = ${countSettimeout}\tERROR = ${(IDEALCOUNT - countSettimeout).toFixed(2)}\tdocument.hidden = ${document.hidden}\tdocument.visibilityState = ${document.visibilityState}`);
                 }
             },1000);
-        })();
+        };
+        setTimeoutDebug();
         (function(){
             setInterval(function(){
                 countSetInterval += 1;
