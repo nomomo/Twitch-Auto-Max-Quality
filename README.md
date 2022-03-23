@@ -30,11 +30,16 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.2.2 (2022-03-23)
+
+- "Disable power saving for inactive tabs" feature no longer works with embed Twitch clips to avoid conflicts with ad blocking extensions.
+
 ### 0.2.1 (2022-03-09)
 
 - New TAMQ Labs feature: "Disable power saving for inactive tabs (Disable JavaScript Timer Throttling)"
   - If you often have problems playing videos in inactive tabs, try using this feature.
   - By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers.
+  - This feature may conflict with certain ad filters in the ad blocking extension.
 
 ### 0.2.0 (2022-03-04)
 

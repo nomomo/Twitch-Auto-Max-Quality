@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.2.1
+// @version     0.2.2
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -187,8 +187,8 @@
         disable_javascript_timer: {
             category: "TAMQLabs",  category_name: "TAMQ Labs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable power saving for inactive tabs (Disable JavaScript Timer Throttling)", ko:"비활성 탭의 절전 기능 비활성화 (Disable JavaScript Timer Throttling)"},
-            desc: {en:"If you often have problems playing videos in inactive tabs, try using this feature.<br />By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers. You must refresh the page after changing this option.", 
-                    ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
+            desc: {en:"If you often have problems playing videos in inactive tabs, try using this feature.<br />By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers. This feature may conflict with certain ad filters in the ad blocking extension. You must refresh the page after changing this option.", 
+                    ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 기능은 광고 차단 확장기능의 특정 광고 필터와 충돌할 수 있습니다. 이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
         },
     };
     window.GM_setting = GM_setting;
@@ -200,6 +200,7 @@
     var first_url = document.location.href.toLowerCase();
     var is_player = (first_url.indexOf("//player.twitch.tv") !== -1 ? true : false);
     var is_clip = (first_url.indexOf("//clips.twitch.tv") !== 1 ? true : false);
+    var is_clip_embed = (first_url.indexOf("//clips.twitch.tv/embed?") !== -1 ? true : false);
     var date_n = Number(new Date());
 
     GM.addStyle(/*css*/`
@@ -227,7 +228,7 @@
 
     ////////////////////////////////////////////////////////////////////////////////////
     // disable_javascript_timer
-    if(GM_SETTINGS.disable_javascript_timer){
+    if(!is_clip_embed && GM_SETTINGS.disable_javascript_timer){
         disableJavascriptTimer();
     }
     var debugHackTimer = false;
@@ -474,6 +475,13 @@
             NOMO_DEBUG("updateLocalStorage error", e);
         }
     }
+
+/*
+return void 0 !== e.hidden ? (t = "hidden",
+                n = "visibilitychange") : void 0 !== e.msHidden ? (t = "msHidden",
+                n = "msvisibilitychange") : void 0 !== e.webkitHidden && (t = "webkitHidden",
+                n = "webkitvisibilitychange"),
+*/
 
     ////////////////////////////////////////////////////////////////////////////////////
     // disable_visibilitychange 화면 이동 시 화질 저하 무력화
