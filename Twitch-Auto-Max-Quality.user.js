@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.3.0
+// @version     0.3.1
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -210,6 +210,12 @@
             title: {en:"Disable WebRTC", ko:"WebRTC 비활성화"},
             desc: {en:"", 
                     ko:""}
+        },
+        disable_P2P: {
+            category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
+            title: {en:"Disable P2P", ko:"P2P 비활성화"},
+            desc: {en:"", 
+                    ko:""}
         }
     };
     window.GM_setting = GM_setting;
@@ -309,7 +315,7 @@
     
     ////////////////////////////////////////////////////////////////////////////////////
     // only_source_quality method
-    if(GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality){
+    if((GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality) || GM_SETTINGS.disable_P2P){
 
         // only_source_quality method for live stream and vod
         var realWorker = unsafeWindow.Worker;
@@ -350,6 +356,28 @@
                             var m3u8_text = await m3u8_fetch.text();
                             NOMO_DEBUG("\\n", input, "\\n", (new Date()), "\\n", m3u8_text);
 
+                            // disable_P2P
+                            if(${GM_SETTINGS.disable_P2P}){
+                                NOMO_DEBUG("disable_P2P");
+                                m3u8_text = m3u8_text.replace(",P2P=1","");
+                            }
+
+                            // only disable_P2P
+                            var osq_enabled = Boolean(${String((GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality))});
+                            NOMO_DEBUG("osq_enabled", osq_enabled);
+                            if(!osq_enabled){
+                                NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
+                                var m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
+                                var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                var new_arg = arguments;
+                                new_arg[0] = m3u8_blob_url;
+
+                                // REVOKE after 10s
+                                setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url);},10000);
+                                return originalFetch2.apply(this, new_arg);
+                            }
+
+                            // only_source_quality
                             var type = ${GM_SETTINGS.only_source_quality_type};
                             var found = false;
                             if(type == 0){

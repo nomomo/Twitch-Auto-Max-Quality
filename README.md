@@ -30,6 +30,10 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.3.1 (2022-07-30)
+
+- New TAMQ Labs feature: "Disable P2P"
+
 ### 0.3.0 (2022-07-30)
 
 - New TAMQ Labs feature: "Disable WebRTC"
