@@ -30,6 +30,14 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.3.0 (2022-07-30)
+
+- New TAMQ Labs feature: "Disable WebRTC"
+  - This option is used to disable the WebRTC feature used for P2P on twitch.tv.
+- Add options to "Only source quality method"
+  - Type 0 : Removes all other selectable video quality except source quality
+  - Type 1 : Overwrite all selectable video quality with source quality
+
 ### 0.2.2 (2022-03-23)
 
 - "Disable power saving for inactive tabs" feature no longer works with embed Twitch clips to avoid conflicts with ad blocking extensions.
