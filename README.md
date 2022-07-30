@@ -32,12 +32,6 @@ nomotg@gmail.com
 
 ### 0.3.1 (2022-07-30)
 
-- New TAMQ Labs feature: "Disable P2P"
-
-### 0.3.0 (2022-07-30)
-
-- New TAMQ Labs feature: "Disable WebRTC"
-  - This option is used to disable the WebRTC feature used for P2P on twitch.tv.
 - Add options to "Only source quality method"
   - Type 0 : Removes all other selectable video quality except source quality
   - Type 1 : Overwrite all selectable video quality with source quality

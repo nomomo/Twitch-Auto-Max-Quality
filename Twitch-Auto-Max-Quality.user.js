@@ -206,12 +206,14 @@
                     ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 기능은 광고 차단 확장기능의 특정 광고 필터와 충돌할 수 있습니다. 이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
         },
         disble_WebRTC: {
+            under_dev: true,
             category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable WebRTC", ko:"WebRTC 비활성화"},
             desc: {en:"", 
                     ko:""}
         },
         disable_P2P: {
+            under_dev: true,
             category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable P2P", ko:"P2P 비활성화"},
             desc: {en:"", 
@@ -357,6 +359,14 @@
                             NOMO_DEBUG("\\n", input, "\\n", (new Date()), "\\n", m3u8_text);
 
                             // disable_P2P
+                            if(DEBUG_WORKER2){
+                                if(m3u8_text.indexOf(",P2P=1") !== -1){
+                                    NOMO_DEBUG("P2P ON");
+                                }
+                                else{
+                                    NOMO_DEBUG("P2P OFF");
+                                }
+                            }
                             if(${GM_SETTINGS.disable_P2P}){
                                 NOMO_DEBUG("disable_P2P");
                                 m3u8_text = m3u8_text.replace(",P2P=1","");
