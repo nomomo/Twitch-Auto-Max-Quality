@@ -121,7 +121,7 @@
             value: "0",
             title:"Options",
             desc: {
-                en:"Type 0: Removes all other selectable video quality except \"best quality\".<br />Type 1: Overwrite all selectable video quality with best quality.<br />Legacy: Removes all other selectable video quality except \"source quality\" & show (source) text.",
+                en:"Type 0: Removes all other selectable video quality except best quality.<br />Type 1: Overwrite all selectable video quality with best quality.<br />Legacy: Removes all other selectable video quality except \"source quality\" & show (source) text.",
                 ko:`Type 0: 최고 화질을 제외한 나머지를 모두 제거<br />Type 1: 전부 최고 화질로 변경<br />Regacy: 최고 화질을 제외한 나머지를 모두 제거하고 (원본) 글자를 표시`
             },
             options:{
