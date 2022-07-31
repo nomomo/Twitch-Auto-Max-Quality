@@ -32,8 +32,8 @@ nomotg@gmail.com
 
 ### 0.3.2 (2022-07-31)
 
-- Add regacy option to "Only source quality method"
-  - Type regacy : Removes all other selectable video quality except source quality & show (source) text.
+- Add legacy option to "Only source quality method"
+  - Type legacy : Removes all other selectable video quality except source quality & show (source) text.
 - Fixed an issue where the "Only source quality method" did not work on the VOD page.
 
 ### 0.3.1 (2022-07-30)
@@ -85,7 +85,7 @@ nomotg@gmail.com
 
 - Now again "Simulate settings button method" works fine.
 - You can now set your preferred video quality. (set it in the settings menu)
-- Removed "Regacy mode" of "Simulate settings button method"
+- Removed "legacy mode" of "Simulate settings button method"
 
 ### 0.0.7 (2021-03-10)
 
@@ -100,7 +100,7 @@ nomotg@gmail.com
 
 ### 0.0.5 (2020-05-31)
 
-- In May 2020, the structure of the Twitch player inserted as an iframe seems to have changed. So I modified the code so that the script works properly again in the Twitch player inserted as an iframe. However, there may be users who still use the old Twitch Player(idk). If 'Simulate settings button method' does not work properly, try turning on "regacy mode" in the settings menu.
+- In May 2020, the structure of the Twitch player inserted as an iframe seems to have changed. So I modified the code so that the script works properly again in the Twitch player inserted as an iframe. However, there may be users who still use the old Twitch Player(idk). If 'Simulate settings button method' does not work properly, try turning on "legacy mode" in the settings menu.
 
 ### 0.0.4 (2019-11-15)
 
