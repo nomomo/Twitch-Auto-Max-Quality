@@ -38,7 +38,7 @@ nomotg@gmail.com
 
 ### 0.3.1 (2022-07-30)
 
-- Now, when using the "Only source quality method", the text "(source)" is no longer displayed in the quality name.
+- Now, when using the "Only source quality method", the text "(source)" is no longer displayed in the quality name. Of course the video quality set by the script is the source quality, even if "(source)" is not displayed.
 - Add options to "Only source quality method"
   - Type 0 : Removes all other selectable video quality except best quality
   - Type 1 : Overwrite all selectable video quality with best quality
@@ -121,4 +121,4 @@ nomotg@gmail.com
 
 ## Happy??
 
-<a href="https://www.buymeacoffee.com/nomomo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="60"></a>　<a href="https://toon.at/donate/636947867320352181" target="_blank"><img src="https://raw.githubusercontent.com/nomomo/Addostream/master/assets/toonation_b11.gif" height="60" alt="Donate with Toonation" /></a>
+<a href="https://www.buymeacoffee.com/nomomo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="60"></a>
