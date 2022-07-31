@@ -30,11 +30,18 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.3.2 (2022-07-31)
+
+- Add regacy option to "Only source quality method"
+  - Type regacy : Removes all other selectable video quality except source quality & show (source) text.
+- Fixed an issue where the "Only source quality method" did not work on the VOD page.
+
 ### 0.3.1 (2022-07-30)
 
+- Now, when using the "Only source quality method", the text "(source)" is no longer displayed in the quality name.
 - Add options to "Only source quality method"
-  - Type 0 : Removes all other selectable video quality except source quality
-  - Type 1 : Overwrite all selectable video quality with source quality
+  - Type 0 : Removes all other selectable video quality except best quality
+  - Type 1 : Overwrite all selectable video quality with best quality
 
 ### 0.2.2 (2022-03-23)
 

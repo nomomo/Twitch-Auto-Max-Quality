@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.3.1
+// @version     0.3.2
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -121,12 +121,13 @@
             value: "0",
             title:"Options",
             desc: {
-                en:"Type 0: Removes all other selectable video quality except \"source quality\".<br />Type 1: Overwrite all selectable video quality with source quality.",
-                ko:`Type 0: 최고 화질을 제외한 나머지를 모두 제거<br />Type 1: 전부 최고 화질로 변경`
+                en:"Type 0: Removes all other selectable video quality except \"best quality\".<br />Type 1: Overwrite all selectable video quality with best quality.<br />Legacy: Removes all other selectable video quality except \"source quality\" & show (source) text.",
+                ko:`Type 0: 최고 화질을 제외한 나머지를 모두 제거<br />Type 1: 전부 최고 화질로 변경<br />Regacy: 최고 화질을 제외한 나머지를 모두 제거하고 (원본) 글자를 표시`
             },
             options:{
                 "0":{title:"0"},
-                "1":{title:"1"}
+                "1":{title:"1"},
+                "1000":{title:"Legacy"}
             }
         },
         only_source_quality_clip: {
@@ -389,6 +390,11 @@
 
                             // only_source_quality
                             var type = ${GM_SETTINGS.only_source_quality_type};
+                            var remove_chunked = true;
+                            if(type == 1000){
+                                type = 0;
+                                remove_chunked = false;
+                            }
                             var found = false;
                             if(type == 0){
                                 var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
@@ -396,11 +402,13 @@
                                 NOMO_DEBUG("mat", mat);
                                 found = mat !== null;
                                 if(found){
-                                    var mat0_name_ori = mat[0].match(/NAME="(.+)"/)[1];
-                                    var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
-                                    NOMO_DEBUG("mat0_name", mat0_name);
-                                    var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/chunked/gi, mat0_name);
-                                    m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                                    if(remove_chunked){
+                                        var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
+                                        var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
+                                        NOMO_DEBUG("mat0_name", mat0_name);
+                                        var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
+                                        m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                                    }
 
                                     for(var i=1; i<mat.length; ++i){
                                         m3u8_text = m3u8_text.replace(mat[i], "");
@@ -422,11 +430,17 @@
                                 NOMO_DEBUG("mat", mat);
                                 found = mat !== null;
                                 if(found){
-                                    var mat0_name_ori = mat[0].match(/NAME="(.+)"/)[1];
-                                    var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
-                                    NOMO_DEBUG("mat0_name", mat0_name);
-                                    var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/chunked/gi, mat0_name);
-                                    m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                                    var mat0_new;
+                                    if(remove_chunked){
+                                        var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
+                                        var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
+                                        NOMO_DEBUG("mat0_name", mat0_name);
+                                        mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
+                                        m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                                    }
+                                    else{
+                                        mat0_new = mat[0];
+                                    }
 
                                     for(var i=1; i<mat.length; ++i){
                                         //var mati_new = mat[0].replace(/VIDEO=".+"/,'VIDEO="'+mat0_name+'"').replace(/GROUP-ID=".+"/,'GROUP-ID="'+mat0_name+'"').replace(/NAME=".+"/,'NAME="'+mat0_name+'"');
@@ -444,7 +458,7 @@
                                     return originalFetch2.apply(this, new_arg);
                                 }
                             }
-                            else if(type == 1000){
+                            else if(type == 100){
                                 // return with blob
                                 var regexMasterPlaylist = /(https:\\/\\/.+\\.m3u8)/gi;
                                 var masterplaylistmatch = m3u8_text.match(regexMasterPlaylist);
