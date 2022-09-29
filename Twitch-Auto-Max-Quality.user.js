@@ -107,7 +107,7 @@
             desc: {en:"This script provides several methods for selecting video quality. Choose your preferred method below.", ko:"이 스크립트는 비디오 품질을 선택하기 위한 여러 방법을 제공합니다. 알잘딱으로 적용됩니다. 적용하길 원하는 방법들을 아래에서 선택하세요."}
         },
         only_source_quality: {
-            category: "general", depth: 2, type: "checkbox", value: false,
+            category: "general", depth: 2, type: "checkbox", value: true,
             title: {en:"[1. Only source quality method]", ko:"[1. \"오로지 원본 화질만\" 방식]"},
             desc: {
                 en:"Removes all other selectable video quality except \"source quality\". So even if the Twitch player sets the video quality to \"Auto\", the only selectable \"Source quality\" is set. <strong>This option is recommended for users who always want to watch videos in the best quality.</strong><br />Caution: Enabling this option may conflict with other scripts (eg TwitchAdSolution.), causing problems with video playback or the scripts not working properly. In this case, turn this option off. If you change this option, you must refresh the web page.",
