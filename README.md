@@ -30,10 +30,6 @@ nomotg@gmail.com
 
 ## Change log
 
-### 0.3.2b (2022-09-30)
-
-- The default option of "Only source quality method" is temporarily changed to ON.
-
 ### 0.3.2 (2022-07-31)
 
 - Add legacy option to "Only source quality method"
