@@ -5,7 +5,7 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/nomomo/Twitch-Auto-Max-Quality/blob/master/README.md)
 -->
 
-- Always start playing live video with source quality on twitch.tv.
+- Always start playing live video with the quality you want on twitch.tv.
 - Prevent automatic change of video quality when tab is disabled.
 
 ## Install
@@ -29,6 +29,14 @@ This script may not work properly on script managers other than Tampermonkey.
 nomotg@gmail.com
 
 ## Change log
+
+### 0.4.0 (2023-02-11)
+
+- "Only source quality method" is renewed as "Only the quality you want method"
+  - You can now remove all but the quality you want, not just the source quality. (set it in the settings menu)
+- Now again "Simulate settings button method" works fine.
+  - The script was modified according to some changes in the Twitch player.
+  - Known bug for "Simulate settings button method": When browsing VOD and CLIP on twitch.tv in some environments, it automatically scrolls down after setting the quality.
 
 ### 0.3.2 (2022-07-31)
 

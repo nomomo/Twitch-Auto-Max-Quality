@@ -50,7 +50,7 @@
     var NOMO_DEBUG = function ( /**/ ) {
         if (!DEBUG) return;
         var args = arguments, args_length = args.length, args_copy = args;
-        for (var i = args_length; i > 0; i--) args[i] = args_copy[i - 1];
+        for (let i = args_length; i > 0; i--) args[i] = args_copy[i - 1];
         args[0] = "[TAMQ]  ";
         args.length = args_length + 1;
         console.log.apply(console, args);
@@ -62,7 +62,7 @@
     * MIT licensed
     * Copyright (c) 2014-2017 Uzair Farooq
     */
-    // eslint-disable-next-line no-cond-assign
+    // eslint-disable-next-line no-cond-assign, no-unused-vars, no-prototype-builtins
     const Arrive = function(e,t,n){"use strict";function r(e,t,n){l.addMethod(t,n,e.unbindEvent),l.addMethod(t,n,e.unbindEventWithSelectorOrCallback),l.addMethod(t,n,e.unbindEventWithSelectorAndCallback);}function i(e){e.arrive=f.bindEvent,r(f,e,"unbindArrive"),e.leave=d.bindEvent,r(d,e,"unbindLeave");}if(e.MutationObserver&&"undefined"!=typeof HTMLElement){var o=0,l=function(){var t=HTMLElement.prototype.matches||HTMLElement.prototype.webkitMatchesSelector||HTMLElement.prototype.mozMatchesSelector||HTMLElement.prototype.msMatchesSelector;return{matchesSelector:function(e,n){return e instanceof HTMLElement&&t.call(e,n);},addMethod:function(e,t,r){var i=e[t];e[t]=function(){return r.length==arguments.length?r.apply(this,arguments):"function"==typeof i?i.apply(this,arguments):n;};},callCallbacks:function(e,t){t&&t.options.onceOnly&&1==t.firedElems.length&&(e=[e[0]]);for(var n,r=0;n=e[r];r++)n&&n.callback&&n.callback.call(n.elem,n.elem);t&&t.options.onceOnly&&1==t.firedElems.length&&t.me.unbindEventWithSelectorAndCallback.call(t.target,t.selector,t.callback);},checkChildNodesRecursively:function(e,t,n,r){for(var i,o=0;i=e[o];o++)n(i,t,r)&&r.push({callback:t.callback,elem:i}),i.childNodes.length>0&&l.checkChildNodesRecursively(i.childNodes,t,n,r);},mergeArrays:function(e,t){var n,r={};for(n in e)e.hasOwnProperty(n)&&(r[n]=e[n]);for(n in t)t.hasOwnProperty(n)&&(r[n]=t[n]);return r;},toElementsArray:function(t){return n===t||"number"==typeof t.length&&t!==e||(t=[t]),t;}};}(),c=function(){var e=function(){this._eventsBucket=[],this._beforeAdding=null,this._beforeRemoving=null;};return e.prototype.addEvent=function(e,t,n,r){var i={target:e,selector:t,options:n,callback:r,firedElems:[]};return this._beforeAdding&&this._beforeAdding(i),this._eventsBucket.push(i),i;},e.prototype.removeEvent=function(e){for(var t,n=this._eventsBucket.length-1;t=this._eventsBucket[n];n--)if(e(t)){this._beforeRemoving&&this._beforeRemoving(t);var r=this._eventsBucket.splice(n,1);r&&r.length&&(r[0].callback=null);}},e.prototype.beforeAdding=function(e){this._beforeAdding=e;},e.prototype.beforeRemoving=function(e){this._beforeRemoving=e;},e;}(),a=function(t,r){var i=new c,o=this,a={fireOnAttributesModification:!1};return i.beforeAdding(function(n){var i,l=n.target;(l===e.document||l===e)&&(l=document.getElementsByTagName("html")[0]),i=new MutationObserver(function(e){r.call(this,e,n);});var c=t(n.options);i.observe(l,c),n.observer=i,n.me=o;}),i.beforeRemoving(function(e){e.observer.disconnect();}),this.bindEvent=function(e,t,n){t=l.mergeArrays(a,t);for(var r=l.toElementsArray(this),o=0;o<r.length;o++)i.addEvent(r[o],e,t,n);},this.unbindEvent=function(){var e=l.toElementsArray(this);i.removeEvent(function(t){for(var r=0;r<e.length;r++)if(this===n||t.target===e[r])return!0;return!1;});},this.unbindEventWithSelectorOrCallback=function(e){var t,r=l.toElementsArray(this),o=e;t="function"==typeof e?function(e){for(var t=0;t<r.length;t++)if((this===n||e.target===r[t])&&e.callback===o)return!0;return!1;}:function(t){for(var i=0;i<r.length;i++)if((this===n||t.target===r[i])&&t.selector===e)return!0;return!1;},i.removeEvent(t);},this.unbindEventWithSelectorAndCallback=function(e,t){var r=l.toElementsArray(this);i.removeEvent(function(i){for(var o=0;o<r.length;o++)if((this===n||i.target===r[o])&&i.selector===e&&i.callback===t)return!0;return!1;});},this;},s=function(){function e(e){var t={attributes:!1,childList:!0,subtree:!0};return e.fireOnAttributesModification&&(t.attributes=!0),t;}function t(e,t){e.forEach(function(e){var n=e.addedNodes,i=e.target,o=[];null!==n&&n.length>0?l.checkChildNodesRecursively(n,t,r,o):"attributes"===e.type&&r(i,t,o)&&o.push({callback:t.callback,elem:i}),l.callCallbacks(o,t);});}function r(e,t){return l.matchesSelector(e,t.selector)&&(e._id===n&&(e._id=o++),-1==t.firedElems.indexOf(e._id))?(t.firedElems.push(e._id),!0):!1;}var i={fireOnAttributesModification:!1,onceOnly:!1,existing:!1};f=new a(e,t);var c=f.bindEvent;return f.bindEvent=function(e,t,r){n===r?(r=t,t=i):t=l.mergeArrays(i,t);var o=l.toElementsArray(this);if(t.existing){for(var a=[],s=0;s<o.length;s++)for(var u=o[s].querySelectorAll(e),f=0;f<u.length;f++)a.push({callback:r,elem:u[f]});if(t.onceOnly&&a.length)return r.call(a[0].elem,a[0].elem);setTimeout(l.callCallbacks,1,a);}c.call(this,e,t,r);},f;},u=function(){function e(){var e={childList:!0,subtree:!0};return e;}function t(e,t){e.forEach(function(e){var n=e.removedNodes,i=[];null!==n&&n.length>0&&l.checkChildNodesRecursively(n,t,r,i),l.callCallbacks(i,t);});}function r(e,t){return l.matchesSelector(e,t.selector);}var i={};d=new a(e,t);var o=d.bindEvent;return d.bindEvent=function(e,t,r){n===r?(r=t,t=i):t=l.mergeArrays(i,t),o.call(this,e,t,r);},d;},f=new s,d=new u;t&&i(t.fn),i(HTMLElement.prototype),i(NodeList.prototype),i(HTMLCollection.prototype),i(HTMLDocument.prototype),i(Window.prototype);var h={};return r(f,h,"unbindAllArrive"),r(d,h,"unbindAllLeave"),h;}}(window,"undefined"==typeof jQuery?null:jQuery,void 0);
     
     /* HackTimer.js by turuslan
@@ -81,7 +81,7 @@
         HackTimerWorker_min_js_blob = new Blob([HackTimerWorker_min_js], {type: 'application/javascript'});
 
         // eslint-disable-next-line no-cond-assign
-        // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty, no-unused-vars
         (function(s){var w,f={},o=unsafeWindow,l=console,m=Math,z='postMessage',p=0,r='hasOwnProperty',y=[].slice,x='fail',v=o.Worker;function d(){do{p=0x7FFFFFFF>p?p+1:0;}while(f[r](p));return p;}if(!/MSIE 10/i.test(navigator.userAgent)){try{s=o.URL.createObjectURL(new Blob(["var f={},p=postMessage,r='hasOwnProperty';onmessage=function(e){var d=e.data,i=d.i,t=d[r]('t')?d.t:0;switch(d.n){case'a':f[i]=setInterval(function(){p(i)},t);break;case'b':if(f[r](i)){clearInterval(f[i]);delete f[i]}break;case'c':f[i]=setTimeout(function(){p(i);if(f[r](i))delete f[i]},t);break;case'd':if(f[r](i)){clearTimeout(f[i]);delete f[i]}break}}"]));}catch(e){}}if(typeof(v)!=='undefined'){try{w=new v(s);o.setInterval=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2)};w[z]({n:'a',i:i,t:t});return i;};o.clearInterval=function(i){if(f[r](i))delete f[i],w[z]({n:'b',i:i});};o.setTimeout=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2),t:!0};w[z]({n:'c',i:i,t:t});return i;};o.clearTimeout=function(i){if(f[r](i))delete f[i],w[z]({n:'d',i:i});};w.onmessage=function(e){var i=e.data,c,n;if(f[r](i)){n=f[i];c=n.c;if(n[r]('t'))delete f[i];}if(typeof(c)=='string')try{c=new Function(c);}catch(k){}if(typeof(c)=='function')c.apply(o,n.p);};}catch(e){l.log(x);}}else l.log(x);})(HackTimerWorker_min_js_blob);//('HackTimerWorker.min.js');
     };
 
@@ -108,10 +108,10 @@
         },
         only_source_quality: {
             category: "general", depth: 2, type: "checkbox", value: false,
-            title: {en:"[1. Only source quality method]", ko:"[1. \"오로지 원본 화질만\" 방식]"},
+            title: {en:"[1. Only the quality you want method]", ko:"[1. \"오로지 당신이 원하는 화질만\" 방식]"},
             desc: {
-                en:"Removes all other selectable video quality except \"source quality\". So even if the Twitch player sets the video quality to \"Auto\", the only selectable \"Source quality\" is set. <strong>This option is recommended for users who always want to watch videos in the best quality.</strong><br />Caution: Enabling this option may conflict with other scripts (eg TwitchAdSolution.), causing problems with video playback or the scripts not working properly. In this case, turn this option off. If you change this option, you must refresh the web page.",
-                ko:"\"원본\"을 제외한 모든 비디오 품질을 제거합니다. 따라서 Twitch 플레이어가 화질을 \"자동\"으로 설정하더라도, 선택가능한 화질은 \"원본\" 화질밖에 없으므로 자연스럽게 최고 화질로 재생됩니다. <strong>이 옵션은 언제나 최고 품질로 비디오를 보고 싶은 유저에게 권장됩니다.</strong><br />주의: 이 옵션을 활성화하면 다른 스크립트(예: TwitchAdSolution)와 충돌하여 여러 문제가 발생할 수도 있습니다. 이 경우 이 옵션을 끄고 다른 방법을 사용하세요. 옵션 수정 후 새로 고침 필요."
+                en:"Removes all other selectable video quality except \"the quality you want\". So even if the Twitch player sets the video quality to \"Auto\", the only selectable quality you want is set. <strong>This option is especially recommended for users who always want to watch videos in the best quality.</strong><br />Caution: Enabling this option may conflict with other scripts (eg TwitchAdSolution.), causing problems with video playback or the scripts not working properly. In this case, turn this option off. If you change this option, you must refresh the web page.",
+                ko:"\"원하는 화질\"을 제외한 모든 비디오 품질을 제거합니다. 따라서 Twitch 플레이어가 화질을 \"자동\"으로 설정하더라도, 선택가능한 화질은 하나밖에 없으므로 자연스럽게 원하는 화질로 재생됩니다. <strong>이 옵션은 특히 언제나 최고 품질로 비디오를 보고 싶은 유저에게 권장됩니다.</strong><br />주의: 이 옵션을 활성화하면 다른 스크립트(예: TwitchAdSolution)와 충돌하여 여러 문제가 발생할 수도 있습니다. 이 경우 이 옵션을 끄고 다른 방법을 사용하세요. 옵션 수정 후 새로 고침 필요."
             }
         },
         only_source_quality_type: {
@@ -121,8 +121,8 @@
             value: "0",
             title:"Options",
             desc: {
-                en:"Type 0: Removes all other selectable video quality except best quality.<br />Type 1: Overwrite all selectable video quality with best quality.<br />Legacy: Removes all other selectable video quality except \"source quality\" & show (source) text.",
-                ko:`Type 0: 최고 화질을 제외한 나머지를 모두 제거<br />Type 1: 전부 최고 화질로 변경<br />Legacy: 최고 화질을 제외한 나머지를 모두 제거하고 (원본) 글자를 표시`
+                en:"Type 0: Removes all other selectable video quality except the quality you want.<br />Type 1: Overwrite all selectable video quality with the quality you want.<br />Legacy: Removes all other selectable video quality except the quality you want & show \"(source)\" text if selected quality is source.",
+                ko:`Type 0: 원하는 화질을 제외한 나머지를 모두 제거<br />Type 1: 모든 화질을 원하는 화질로 덮어쓰기<br />Legacy: 최고 화질을 제외한 나머지를 모두 제거 & 선택된 화질이 원본일 경우 "(원본)" 글자를 표시`
             },
             options:{
                 "0":{title:"0"},
@@ -130,12 +130,28 @@
                 "1000":{title:"Legacy"}
             }
         },
+        only_source_quality_prefer_1st : {
+            category:"general", depth:3, type: "text", value: "best",
+            title:{en:"1st preferred quality for only the quality you want method", ko:"가장 선호하는 비디오 품질 (오로지 당신이 원하는 화질만 방법)"},
+            desc:{
+                en:`(Choose one of the following: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+            }
+        },
+        only_source_quality_prefer_2nd : {
+            category:"general", depth:3, type: "text", value: "720p",
+            title:{en:"2nd preferred quality for only the quality you want method", ko:"두 번째로 선호하는 비디오 품질 (오로지 당신이 원본 화질만 방법)"},
+            desc:{
+                en:`(Choose one of the following: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+            }
+        },
         only_source_quality_clip: {
             category: "general", depth: 3, type: "checkbox", value: true,
-            title: {en:"Apply \"Only source quality method\" to the clip page", ko:"오로지 원본 화질만 사용하기 방법을 클립 페이지에도 적용"},
+            title: {en:"Apply \"Only the quality you want method\" to the clip page", ko:"오로지 당신이 원하는 화질만 방법을 클립 페이지에도 적용"},
             desc: {
-                en:"Removes all selectable quality except \"Source\" when playing clips on Twitch.tv. This feature is not yet supported for clips inserted in an iframe method on an external page other than Twitch.",
-                ko:"Twitch.tv 에서 클립을 재생할 때 \"원본\"을 제외한 모든 비디오 품질을 제거합니다. Twitch 가 아닌 외부 페이지에 iframe 방식으로 삽입된 클립에 대해서는 아직 이 기능을 지원하지 않습니다."
+                en:"Removes all selectable quality except \"the quality you want\" when playing clips on Twitch.tv. This feature is not yet supported for clips inserted in an iframe method on an external page other than Twitch.",
+                ko:"Twitch.tv 에서 클립을 재생할 때 \"원하는 화질\"을 제외한 모든 비디오 품질을 제거합니다. Twitch 가 아닌 외부 페이지에 iframe 방식으로 삽입된 클립에 대해서는 아직 이 기능을 지원하지 않습니다."
             }
         },
         max_quality_menu_trigger: {
@@ -162,10 +178,10 @@
                 ko:`(다음 중 하나를 선택하여 입력하세요: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
             }
         },
-        max_quality_menu_trigger_delay : {
-            category:"general", depth:3, type: "text", value: 1000, valid:"number", min_value:0, max_value:100000,
-            title:{en:"Delay until the first virtual click.", ko:"첫 번째 매크로 클릭 까지의 딜레이 시간"},
-            desc:{en:"(Unit:ms, Default: 1000, Range: 200~100000)", ko:"(단위:ms, 기본값: 1000, 범위: 200~100000)"}
+        max_quality_menu_trigger_each_delay : {
+            category:"general", depth:3, type: "text", value: 50, valid:"number", min_value:0, max_value:100000,
+            title:{en:"Delay on each click.", ko:"각 클릭 시의 딜레이 시간"},
+            desc:{en:"(Unit:ms, Default: 50, Range: 0~100000)", ko:"(단위:ms, 기본값: 50, 범위: 0~100000)"}
         },
         max_quality_menu_trigger_clip: {
             category: "general", depth: 3, type: "checkbox", value: true,
@@ -204,21 +220,21 @@
             category: "TAMQLabs",  category_name: "TAMQ Labs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable power saving for inactive tabs (Disable JavaScript Timer Throttling)", ko:"비활성 탭의 절전 기능 비활성화 (Disable JavaScript Timer Throttling)"},
             desc: {en:"If you often have problems playing videos in inactive tabs, try using this feature.<br />By enabling this option, you can disable some of the power saving features (Javascript Timer Throttling) for inactive tabs supported by Chrome-based browsers. This feature may conflict with certain ad filters in the ad blocking extension. You must refresh the page after changing this option.", 
-                    ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 기능은 광고 차단 확장기능의 특정 광고 필터와 충돌할 수 있습니다. 이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
+                ko:"만약 Twitch.tv 탭을 비활성 상태로 사용할 때 동영상 재생 중 문제가 발생하는 경우가 많다고 느꼈다면 이 옵션을 켜보세요.<br />이 옵션은 크롬 계열 브라우저에서 지원하는 비활성 탭에 대한 power saving 기능(Javascript Timer Throttling)의 일부를 비활성화 하여, 비활성 탭에 있는 동영상을 재생 중일 때 발생할 수 있는 문제를 개선할 수 있습니다.<br />이 기능은 광고 차단 확장기능의 특정 광고 필터와 충돌할 수 있습니다. 이 실험실 기능은 알 수 없는 문제를 발생시킬 수도 있습니다. 옵션 변경 후 새로고침 필요."}
         },
         disble_WebRTC: {
             under_dev: true,
             category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable WebRTC", ko:"WebRTC 비활성화"},
             desc: {en:"", 
-                    ko:""}
+                ko:""}
         },
         disable_P2P: {
             under_dev: true,
             category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable P2P", ko:"P2P 비활성화"},
             desc: {en:"", 
-                    ko:""}
+                ko:""}
         }
     };
     window.GM_setting = GM_setting;
@@ -228,8 +244,8 @@
     // Initialize
     ////////////////////////////////////////////////////////////////////////////////////
     var first_url = document.location.href.toLowerCase();
-    var is_player = (first_url.indexOf("//player.twitch.tv") !== -1 ? true : false);
-    var is_clip = (first_url.indexOf("//clips.twitch.tv") !== 1 ? true : false);
+    //var isPlayerTwitchTv = (first_url.indexOf("//player.twitch.tv") !== -1 ? true : false);
+    var isClipsTwitchTv = (first_url.indexOf("//clips.twitch.tv") !== -1 ? true : false);
     var is_clip_embed = (first_url.indexOf("//clips.twitch.tv/embed?") !== -1 ? true : false);
     var date_n = Number(new Date());
 
@@ -249,11 +265,17 @@
         body.pl-menu-hide .pl-settings-icon,
         body.pl-menu-hide button[data-a-target='player-settings-button'],
         body.pl-menu-hide div[data-a-target='player-settings-menu'],
-        body.pl-menu-hide div.settings-menu-button-component{ display:none; opacity:0; }
+        body.pl-menu-hide div.settings-menu-button-component,
+        body.pl-menu-hide div[aria-labelledby="active-settings-menu-header"]
+        { display:none; opacity:0; }
 
         #GM_setting .GM_setting_depth1 .GM_setting_list_head{ width: 500px !important; }
         #GM_setting .GM_setting_depth2 .GM_setting_list_head{ width: 470px !important; }
         #GM_setting .GM_setting_depth3 .GM_setting_list_head{ width: 440px !important; }
+
+        .smoothScroll{
+            scroll-behavior:smooth;
+        }
     `);
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -344,7 +366,7 @@
                     var NOMO_DEBUG = function ( /**/ ) {
                         if (!DEBUG_WORKER2) return;
                         var args = arguments, args_length = args.length, args_copy = args;
-                        for (var i = args_length; i > 0; i--) args[i] = args_copy[i - 1];
+                        for (let i = args_length; i > 0; i--) args[i] = args_copy[i - 1];
                         args[0] = "[TAMQ][WORKER]  ";
                         args.length = args_length + 1;
                         console.log.apply(console, args);
@@ -359,6 +381,7 @@
                             var m3u8_text = await m3u8_fetch.text();
                             NOMO_DEBUG("\\n", input, "\\n", (new Date()), "\\n", m3u8_text);
 
+                            ///////////////////////////////////////////////////
                             // disable_P2P
                             if(DEBUG_WORKER2){
                                 if(m3u8_text.indexOf(",P2P=1") !== -1){
@@ -388,7 +411,9 @@
                                 return originalFetch2.apply(this, new_arg);
                             }
 
+                            ///////////////////////////////////////////////////
                             // only_source_quality
+                            // find target quality index
                             var type = ${GM_SETTINGS.only_source_quality_type};
                             var remove_chunked = true;
                             if(type == 1000){
@@ -396,69 +421,98 @@
                                 remove_chunked = false;
                             }
                             var found = false;
-                            if(type == 0){
-                                var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
-                                var mat = m3u8_text.match(regex);
-                                NOMO_DEBUG("mat", mat);
-                                found = mat !== null;
-                                if(found){
-                                    if(remove_chunked){
-                                        var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
-                                        var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
-                                        NOMO_DEBUG("mat0_name", mat0_name);
-                                        var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
-                                        m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                            
+                            var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
+                            var mat = m3u8_text.match(regex);
+                            NOMO_DEBUG("mat", mat);
+                            found = mat !== null;
+                            if(mat == null) mat = [];   // error case
+
+                            var q1st = ${"\""+GM_SETTINGS.only_source_quality_prefer_1st.toLowerCase()+"\""};
+                            var q2nd = ${"\""+GM_SETTINGS.only_source_quality_prefer_2nd.toLowerCase()+"\""};
+                            NOMO_DEBUG("TARGET Q 1st: " + q1st + ", 2nd:" + q2nd);
+                            
+                            var qualityText = [];
+                            var targetIndex = -1;
+                            var targetIndex1st = -1;
+                            var targetIndex2nd = -1;
+        
+                            for(let i=0;i<mat.length;i++){
+                                qualityText.push(mat[i].match(/NAME=(".+")/)[1]);
+                            }
+
+                            if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
+                                targetIndex = 0;
+                            }
+                            else if(q1st == "worst" || q1st == "lowest" || q1st == "low" || q1st == "min"){
+                                targetIndex = mat.length - 1;
+                            }
+                            else{
+                                for(let i=0;i<mat.length;i++){
+
+                                    if(i !== 0 && !(/p\\d{2}/gi.test(qualityText[i]))){
+                                        qualityText[i] = qualityText[i]+"30";
                                     }
 
-                                    for(var i=1; i<mat.length; ++i){
+                                    if(targetIndex1st === -1 && qualityText[i].indexOf(q1st) !== -1){
+                                        targetIndex1st = i;
+                                    }
+                                    if(targetIndex2nd === -1 && qualityText[i].indexOf(q2nd) !== -1){
+                                        targetIndex2nd = i;
+                                    }
+                                }
+
+                                if(targetIndex1st !== -1){
+                                    targetIndex = targetIndex1st;
+                                }
+                                else if(targetIndex2nd !== -1){
+                                    targetIndex = targetIndex2nd;
+                                }
+                                else{
+                                    targetIndex = 1;
+                                }
+                            }
+
+                            NOMO_DEBUG("TARGET INDEX:" + targetIndex + "(" + qualityText[targetIndex] + ")");
+                            if(targetIndex < 0) targetIndex = 0;
+
+                            ///////////////////////////////////////////////////
+                            // modify m3u8 content
+                            if(found && type !== 100){
+                                // remove "(source)" text
+                                if(remove_chunked){
+                                    var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
+                                    var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
+                                    NOMO_DEBUG("mat0_name", mat0_name);
+                                    var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
+                                    m3u8_text = m3u8_text.replace(mat[0], mat0_new);
+                                }
+
+                                for(let i=0; i<mat.length; ++i){
+                                    if(i == targetIndex) continue;
+
+                                    // type 0: remove except one
+                                    if(type == 0){
                                         m3u8_text = m3u8_text.replace(mat[i], "");
                                     }
-                                    NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
-                                    var m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
-                                    var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
-                                    var new_arg = arguments;
-                                    new_arg[0] = m3u8_blob_url;
-
-                                    // REVOKE after 10s
-                                    setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url);},10000);
-                                    return originalFetch2.apply(this, new_arg);
+                                    // type 1: replace all
+                                    else if(type == 1){
+                                        m3u8_text = m3u8_text.replace(mat[i], mat[targetIndex]);
+                                    }
                                 }
-                            }
-                            else if(type == 1){
-                                var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
-                                var mat = m3u8_text.match(regex);
-                                NOMO_DEBUG("mat", mat);
-                                found = mat !== null;
-                                if(found){
-                                    var mat0_new;
-                                    if(remove_chunked){
-                                        var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
-                                        var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
-                                        NOMO_DEBUG("mat0_name", mat0_name);
-                                        mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
-                                        m3u8_text = m3u8_text.replace(mat[0], mat0_new);
-                                    }
-                                    else{
-                                        mat0_new = mat[0];
-                                    }
 
-                                    for(var i=1; i<mat.length; ++i){
-                                        //var mati_new = mat[0].replace(/VIDEO=".+"/,'VIDEO="'+mat0_name+'"').replace(/GROUP-ID=".+"/,'GROUP-ID="'+mat0_name+'"').replace(/NAME=".+"/,'NAME="'+mat0_name+'"');
-                                        //m3u8_text = m3u8_text.replace(mat[i], mati_new);
-                                        m3u8_text = m3u8_text.replace(mat[i], mat0_new);
-                                    }
-                                    NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
-                                    var m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
-                                    var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
-                                    var new_arg = arguments;
-                                    new_arg[0] = m3u8_blob_url;
+                                NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
+                                var m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
+                                var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                var new_arg = arguments;
+                                new_arg[0] = m3u8_blob_url;
 
-                                    // REVOKE after 10s
-                                    setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url);},10000);
-                                    return originalFetch2.apply(this, new_arg);
-                                }
+                                // REVOKE after 10s
+                                setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url);},10000);
+                                return originalFetch2.apply(this, new_arg);
                             }
-                            else if(type == 100){
+                            // type 100: test code
+                            else {
                                 // return with blob
                                 var regexMasterPlaylist = /(https:\\/\\/.+\\.m3u8)/gi;
                                 var masterplaylistmatch = m3u8_text.match(regexMasterPlaylist);
@@ -524,10 +578,14 @@
         if(GM_SETTINGS.only_source_quality_clip){
             var realFetch = unsafeWindow.fetch;
             unsafeWindow.fetch = async function(input, init){
-                if(input.toLowerCase().indexOf("https://gql.twitch.tv/gql") !== -1 && init !== undefined && init.method === "POST" && init.body !== undefined){
+                try {
+                    if((input.toLowerCase().indexOf("https://gql.twitch.tv/gql") !== -1 && init !== undefined && init.method === "POST" && init.body !== undefined) === false){
+                        return realFetch.apply(this, arguments);
+                    }
+                    
                     var body = JSON.parse(init.body);
                     var found = -1;
-                    for(var i=0; i<body.length; i++){
+                    for(let i=0; i<body.length; i++){
                         if(body[i].operationName !== undefined && body[i].operationName == "VideoAccessToken_Clip"){
                             found = i;
                             break;
@@ -535,46 +593,44 @@
                     }
 
                     if(found !== -1){
-                        try {
-                            NOMO_DEBUG("gql", input, init);
-                            var fetch_temp = await realFetch.apply(this, arguments);
-                            var fetch_text = await fetch_temp.text();
-                            var fetch_JSON = JSON.parse(fetch_text);
-                            
-                            NOMO_DEBUG("CONVERTED gql_text", found, fetch_JSON);
+                        NOMO_DEBUG("gql", input, init);
+                        var fetch_temp = await realFetch.apply(this, arguments);
+                        var fetch_text = await fetch_temp.text();
+                        var fetch_JSON = JSON.parse(fetch_text);
+                        
+                        NOMO_DEBUG("CONVERTED gql_text", found, fetch_JSON);
 
-                            if(fetch_JSON !== undefined && fetch_JSON[found] !== undefined && fetch_JSON[found].data !== undefined 
-                                && fetch_JSON[found].data.clip !== undefined && fetch_JSON[found].data.clip.videoQualities !== undefined){
-                                    NOMO_DEBUG("fetch_temp", fetch_temp);
-                                fetch_JSON[found].data.clip.videoQualities = fetch_JSON[found].data.clip.videoQualities.slice(0, 1);
-                                // for(var j=0; j<fetch_JSON[found].data.clip.videoQualities.length; j++){
-                                //     if(j == 0) continue;
-                                //     fetch_JSON[found].data.clip.videoQualities[j].sourceURL = fetch_JSON[found].data.clip.videoQualities[0].sourceURL;
-                                // }
+                        if(fetch_JSON !== undefined && fetch_JSON[found] !== undefined && fetch_JSON[found].data !== undefined 
+                            && fetch_JSON[found].data.clip !== undefined && fetch_JSON[found].data.clip.videoQualities !== undefined){
+                            NOMO_DEBUG("fetch_temp", fetch_temp);
+                            fetch_JSON[found].data.clip.videoQualities = fetch_JSON[found].data.clip.videoQualities.slice(0, 1);
+                            // for(var j=0; j<fetch_JSON[found].data.clip.videoQualities.length; j++){
+                            //     if(j == 0) continue;
+                            //     fetch_JSON[found].data.clip.videoQualities[j].sourceURL = fetch_JSON[found].data.clip.videoQualities[0].sourceURL;
+                            // }
 
-                                fetch_text = JSON.stringify(fetch_JSON);
+                            fetch_text = JSON.stringify(fetch_JSON);
 
-                                var temp_blob = new Blob([fetch_text], {
-                                    type: 'application/json'
-                                });
-                                var temp_blob_url = URL.createObjectURL(temp_blob);
-                                var new_arg = [];//arguments
-                                new_arg[0] = temp_blob_url;
+                            var temp_blob = new Blob([fetch_text], {
+                                type: 'application/json'
+                            });
+                            var temp_blob_url = URL.createObjectURL(temp_blob);
+                            var new_arg = [];//arguments
+                            new_arg[0] = temp_blob_url;
 
-                                // REVOKE after 10s
-                                setTimeout(function(){URL.revokeObjectURL(temp_blob_url);},10000);
-                                NOMO_DEBUG("HERE", fetch_JSON);
-                                return realFetch.apply(this, new_arg);
-                            }
-                        }
-                        catch(e){
-                            NOMO_DEBUG("error from only_source_quality_clip", e);
-                            return realFetch.apply(this, arguments);
+                            // REVOKE after 10s
+                            setTimeout(function(){URL.revokeObjectURL(temp_blob_url);},10000);
+                            NOMO_DEBUG("HERE", fetch_JSON);
+                            return realFetch.apply(this, new_arg);
                         }
                     }
+                    
+                    return realFetch.apply(this, arguments);
                 }
-                
-                return realFetch.apply(this, arguments);
+                catch(e){
+                    NOMO_DEBUG("error from only_source_quality_clip", e);
+                    return realFetch.apply(this, arguments);
+                }
             };
         }
     }
@@ -600,12 +656,12 @@
         }
     }
 
-/*
-return void 0 !== e.hidden ? (t = "hidden",
-                n = "visibilitychange") : void 0 !== e.msHidden ? (t = "msHidden",
-                n = "msvisibilitychange") : void 0 !== e.webkitHidden && (t = "webkitHidden",
-                n = "webkitvisibilitychange"),
-*/
+    /*
+    return void 0 !== e.hidden ? (t = "hidden",
+                    n = "visibilitychange") : void 0 !== e.msHidden ? (t = "msHidden",
+                    n = "msvisibilitychange") : void 0 !== e.webkitHidden && (t = "webkitHidden",
+                    n = "webkitvisibilitychange"),
+    */
 
     ////////////////////////////////////////////////////////////////////////////////////
     // disable_visibilitychange 화면 이동 시 화질 저하 무력화
@@ -695,247 +751,330 @@ return void 0 !== e.hidden ? (t = "hidden",
         catch(e){
             NOMO_DEBUG("disable_visibilitychange error - overwrite document addEventListener", e);
         }
+
+        // // to debug element related event
+        // unsafeWindow.Element.prototype.addEventListenerOri = unsafeWindow.Element.prototype.addEventListener;
+        // unsafeWindow.Element.prototype.addEventListener = function (a, b, c) {
+        //     NOMO_DEBUG("element event bind", a, b, c);
+
+        //     if (c == undefined){
+        //         c = false;
+        //     }
+        //     unsafeWindow.Element.prototype.addEventListenerOri.apply(this, arguments);
+        // };
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
     // 	Start live stream with user-preferred quality
-    try {
-        var setting_elem_selector = "button[data-a-target='player-settings-button']";
-        var quality_elem_selector = "button[data-a-target='player-settings-menu-item-quality']";
-        var max_quality_elem_selector = "input[data-a-target='tw-radio']";
-        var menu_elem_selector = "div[data-a-target='player-settings-menu']";
-        var play_pause_selector = "button[data-a-target='player-play-pause-button']";
+    var setting_elem_selector = "button[data-a-target='player-settings-button']";
+    var quality_elem_selector = "button[data-a-target='player-settings-menu-item-quality']";
+    //var max_quality_elem_selector = "input[data-a-target='tw-radio']";
+    var max_quality_elem_selector = "[data-a-target='player-settings-submenu-quality-option'] input[data-a-target='tw-radio']";
+    var menu_elem_selector = "div[data-a-target='player-settings-menu']";
+    var play_pause_selector = "button[data-a-target='player-play-pause-button']";
+    var isClip = false;
+    var video = undefined;
 
+    var prevurl = undefined;
+    // eslint-disable-next-line no-unused-vars
+    var prevQ = undefined;
+
+    var use_qob = true;
+    var cooltime = 5000;    // ms
+    var prevTime;
+    try {
         // max_quality_start
         if (GM_SETTINGS.max_quality_start) {
-            var use_qob = true;
-            var SETTIMEOUT_PL_MENU = undefined;
-            var prev_qu_time = Number(new Date());
 
-            // 5초 동안 대기 후 실패 시 unbind
-            var video_quality_unbind = function () {
-                setTimeout(function () {
-                    $(document).unbindArrive(setting_elem_selector);
-                    $(document).unbindArrive(quality_elem_selector);
-                    $(document).unbindArrive(max_quality_elem_selector);
-                }, 1);
-            };
-            var PL_MENU_SHOW_DELAY = function () {
-                clearTimeout(SETTIMEOUT_PL_MENU);
-                SETTIMEOUT_PL_MENU = setTimeout(function () {
-                    $("body").removeClass("pl-menu-hide");
-                    video_quality_unbind();
-                    NOMO_DEBUG("5초 경과하여 자동 해제됨");
-                }, 5000);
-            };
-
+            // max_quality_localstorage
             updateLocalStorage();
 
-            // Video Player 가 감지되거나, src 값이 바뀌면 화질 설정
-            var mutationTarget = document;
-            var mutationOption = {
-                attributes: true,
-                attributeFilter: ['src'],
-                attributeOldValue: true,
-                characterData: false,
-                characterDataOldValue: false,
-                childList: false,
-                subtree: true
-            };
-            var videoMutation = new MutationObserver(function (mutations) {
-                mutations.some(function (mutation) {
-                    NOMO_DEBUG('Old src: ', mutation.oldValue, 'New src: ', mutation.target.src, mutation);
-                    var isClip = mutation.target.src.indexOf("clip") !== -1;
-
-                    if (mutation.target.nodeName.toLowerCase() !== "video" ||
-                        mutation.type !== 'attributes' ||
-                        mutation.attributeName !== 'src' ||
-                        mutation.target.src === undefined ||
-                        mutation.target.src === null ||
-                        mutation.target.src === ""
-                        //|| mutation.target.src.indexOf("clip") !== -1
-                        //|| (GM_SETTINGS.max_quality_target_blob && mutation.target.src.indexOf("blob") === -1)
-                    ){
-                        return false;
-                    }
-
-                    // DEBUG: 이전 mutation 시간과의 시간 비교
-                    var curr_qu_time = Number(new Date());
-                    var mutation_duration = curr_qu_time - prev_qu_time;
-                    prev_qu_time = curr_qu_time;
-                    NOMO_DEBUG("mutation delay: ", mutation_duration/1000, " s");
-
-                    // set_volume_when_stream_starts
-                    try {
-                        if(GM_SETTINGS.set_volume_when_stream_starts && !is_volume_changed){
-                            NOMO_DEBUG("set_volume");
-                            if(mutation.target.volume !== undefined){
-                                NOMO_DEBUG("MUTE?", mutation.target.muted, "CURRENT VOLUME", mutation.target.volume, "TARGET VOLUME", GM_SETTINGS.target_start_volume);
-                                setTimeout(function(){
-                                    if(GM_SETTINGS.target_start_volume !== 0.0){
-                                        mutation.target.muted = false;
-                                    }
-                                    mutation.target.volume = GM_SETTINGS.target_start_volume;
-                                    is_volume_changed = true;
-                                },100);
-                            }
-                        }
-                    } catch (e) {
-                        NOMO_DEBUG("ERROR FROM set_volume_when_stream_starts", e);
-                    }
-
-                    // video_quality_max
-                    try {
-                        // max_quality_localstorage
-                        updateLocalStorage();
-                        // max_quality_menu_trigger
-                        if (!GM_SETTINGS.only_source_quality && GM_SETTINGS.max_quality_menu_trigger) {
-                            if(isClip && !GM_SETTINGS.max_quality_menu_trigger_clip){
-                                return true;
-                            }
-
-                            // 스쿼드 스트리밍일 경우 현재 지원하지 않음
-                            if(/https?:\/\/(?:www\.)?twitch\.tv\/[a-zA-Z0-9-_]+\/squad$/.test(document.location.href)){
-                                NOMO_DEBUG("squad streaming is not supported");
-                                return true;
-                            }
-
+            $(document).arrive("video", { existing: true, onlyOnce:false, fireOnAttributesModification:true }, function (elem) {
+                // set_volume_when_stream_starts
+                try {
+                    if(GM_SETTINGS.set_volume_when_stream_starts && !is_volume_changed){
+                        NOMO_DEBUG("set_volume");
+                        if(mutation.target.volume !== undefined){
+                            NOMO_DEBUG("MUTE?", mutation.target.muted, "CURRENT VOLUME", mutation.target.volume, "TARGET VOLUME", GM_SETTINGS.target_start_volume);
                             setTimeout(function(){
-                                video_quality_unbind();
-                                clearTimeout(SETTIMEOUT_PL_MENU);
-
-                                $("body").addClass("pl-menu-hide");
-                                PL_MENU_SHOW_DELAY();
-
-                                // 이미 메뉴 존재 시
-                                if ($(menu_elem_selector).length !== 0) {
-                                    NOMO_DEBUG("이미 메뉴 존재");
-                                    $(setting_elem_selector).click();
+                                if(GM_SETTINGS.target_start_volume !== 0.0){
+                                    mutation.target.muted = false;
                                 }
-
-                                // 설정 버튼 클릭
-                                $(document).arrive(setting_elem_selector, { onlyOnce: true, existing: true }, function () {
-                                    NOMO_DEBUG("ARRIVE FIRED 1");
-                                    
-                                    use_qob = true;
-
-                                    video_quality_unbind();
-                                    $(this).click();
-                                    PL_MENU_SHOW_DELAY();
-
-                                    // 화질 버튼 클릭
-                                    $(document).arrive(quality_elem_selector, { onlyOnce: true, existing: true }, function () {
-                                        NOMO_DEBUG("ARRIVE FIRED 2");
-
-                                        video_quality_unbind();
-                                        $(this).click();
-                                        PL_MENU_SHOW_DELAY();
-
-                                        // source 버튼 클릭
-                                        $(document).arrive(max_quality_elem_selector, { onlyOnce: true, existing: true }, function () {
-                                            NOMO_DEBUG("ARRIVE FIRED 3");
-
-                                            video_quality_unbind();
-                                            var $qb = $(max_quality_elem_selector);
-                                            var qualityTextOri = [];
-                                            var qualityText = [];
-                                            var targetIndex = 1;
-                                            var targetIndex1st = -1;
-                                            var targetIndex2nd = -1;
-
-                                            if (use_qob && $qb.length >= 2) {
-                                                use_qob = false;
-
-                                                var q1st = GM_SETTINGS.max_quality_menu_trigger_prefer_1st.toLowerCase();
-                                                var q2nd = GM_SETTINGS.max_quality_menu_trigger_prefer_2nd.toLowerCase();
-                                                NOMO_DEBUG(`TARGET Q 1st:${q1st}, 2nd:${q2nd}`);
-
-                                                if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
-                                                    if(isClip){
-                                                        targetIndex = 0;
-                                                    }
-                                                    else{
-                                                        targetIndex = 1;
-                                                    }
-                                                }
-                                                else if(q1st == "worst" || q1st == "lowest" || q1st == "low" || q1st == "min"){
-                                                    targetIndex = $qb.length - 1;
-                                                }
-                                                else{
-                                                    for(var i=0;i<$qb.length;i++){
-                                                        qualityTextOri.push($($qb[i]).closest("div").text());
-
-                                                        qualityText.push((qualityTextOri[i]).replace(/\s(.+)/,"").trim());
-                                                        // NOMO_DEBUG(`Q${i+1} "${qualityText[i]}"`);
-
-                                                        if(i !== 0 && !(/p\d{2}/gi.test(qualityText[i]))){
-                                                            qualityText[i] = qualityText[i]+"30";
-                                                        }
-    
-                                                        if(targetIndex1st === -1 && qualityText[i].indexOf(q1st) !== -1){
-                                                            targetIndex1st = i;
-                                                        }
-                                                        if(targetIndex2nd === -1 && qualityText[i].indexOf(q2nd) !== -1){
-                                                            targetIndex2nd = i;
-                                                        }
-                                                    }
-
-                                                    if(targetIndex1st !== -1){
-                                                        targetIndex = targetIndex1st;
-                                                    }
-                                                    else if(targetIndex2nd !== -1){
-                                                        targetIndex = targetIndex2nd;
-                                                    }
-                                                    else{
-                                                        targetIndex = 1;
-                                                    }
-
-                                                    NOMO_DEBUG(`TARGET INDEX: ${targetIndex}:${qualityTextOri[targetIndex]}(${qualityText[targetIndex]})`);
-                                                }
-                                                NOMO_DEBUG("FINAL TARGET INDEX:", targetIndex);
-
-                                                $(max_quality_elem_selector)[targetIndex].click();
-                                                if($(menu_elem_selector).length > 0){
-                                                    $(setting_elem_selector).click();
-                                                }
-                                                clearTimeout(SETTIMEOUT_PL_MENU);
-                                                $("body").removeClass("pl-menu-hide");
-                                                video_quality_unbind();
-                                            }
-
-                                            // 강제 화질 변경 감지
-                                            setTimeout(function(){
-                                                var $icon_spin = $(".pl-settings-icon--spin");
-                                                if($icon_spin.length == 0){
-                                                    return;
-                                                }
-                                                NOMO_DEBUG("강제 화질 변경 감지");
-                                                var $pause_play_button = $(play_pause_selector);
-                                                if($pause_play_button.length !== 0){
-                                                    $(play_pause_selector).click();
-                                                    setTimeout(function(){
-                                                        $(play_pause_selector).click();
-                                                    },50);
-                                                }
-                                            },1000);
-                                        });
-
-                                    });
-                                });
-                            },GM_SETTINGS.max_quality_menu_trigger_delay);
+                                mutation.target.volume = GM_SETTINGS.target_start_volume;
+                                is_volume_changed = true;
+                            },100);
                         }
-                    } catch (e) {
-                        NOMO_DEBUG("ERROR FROM video_quality_max", e);
                     }
-                    return true;
+                } catch (e) {
+                    NOMO_DEBUG("ERROR FROM set_volume_when_stream_starts", e);
+                }
+
+                // loadstart -> loadedmetadata -> loadeddata ->  canplay -> play
+                video = elem;
+                NOMO_DEBUG("video", elem);
+                $(elem).on("loadstart", function(){
+                    NOMO_DEBUG("video loadstart");
+                    let currurl = document.location.href;
+                    if(prevurl == currurl) return;
+                    prevurl = currurl;                
+                    prevTime = [Number(new Date()) - cooltime * 2];
+                    for(let i=1; i<4;i++){
+                        prevTime[i] = prevTime[0];
+                    }
+                    setQualityMacro(elem);
                 });
+                // $(elem).on("loadeddata", function(){
+                //     NOMO_DEBUG("video loadeddata");
+                //     setQualityMacro(elem);
+                // });
+                // $(elem).on("loadedmetadata", function(){
+                //     NOMO_DEBUG("video loadedmetadata");
+                //     //setQualityMacro(elem);
+                // });
+                // $(elem).on("canplay", function(){
+                //     NOMO_DEBUG("video canplay");
+                //     setQualityMacro(elem);
+                // });
+                // $(elem).on("play", function(){
+                //     NOMO_DEBUG("video play");
+                //     //setQualityMacro(elem);
+                // });
             });
-            
-            videoMutation.observe(mutationTarget, mutationOption);
         }
     } catch (e) {
         NOMO_DEBUG("max_quality_start error", e);
     }
+
+    // 5초 동안 대기 후 실패 시 unbind
+    var SETTIMEOUT_PL_MENU = undefined;
+    function video_quality_unbind() {
+        setTimeout(function () {
+            $(document).unbindArrive(setting_elem_selector);
+            $(document).unbindArrive(quality_elem_selector);
+            $(document).unbindArrive(max_quality_elem_selector);
+        }, 1);
+    }
+    function PL_MENU_SHOW_DELAY() {
+        clearTimeout(SETTIMEOUT_PL_MENU);
+        SETTIMEOUT_PL_MENU = setTimeout(function () {
+            if($('[data-test-selector="main-menu"]').length > 0){
+                $(setting_elem_selector).first().trigger("click");
+            }
+            $("body").removeClass("pl-menu-hide");
+            video_quality_unbind();
+            NOMO_DEBUG("5초 경과하여 자동 해제됨");
+        }, 5000);
+    }
+
+    function setQualityMacro(){
+        NOMO_DEBUG("setQualityMacro");
+
+        // video_quality_max
+        try {
+            if((video && video.src && video.src.indexOf(".clips.") !== -1 || document.location.href.indexOf("/clip/") !== -1 || isClipsTwitchTv)){
+                isClip = true;
+            }
+            else{
+                isClip = false;
+            }
+            NOMO_DEBUG("isClip = " , isClip);
+
+            // max_quality_menu_trigger
+            if (!GM_SETTINGS.only_source_quality && GM_SETTINGS.max_quality_menu_trigger) {
+                if(isClip && !GM_SETTINGS.max_quality_menu_trigger_clip){
+                    return true;
+                }
+                // 스쿼드 스트리밍일 경우 현재 지원하지 않음
+                if(/https?:\/\/(?:www\.)?twitch\.tv\/[a-zA-Z0-9-_]+\/squad$/.test(document.location.href)){
+                    NOMO_DEBUG("squad streaming is not supported");
+                    return true;
+                }
+
+                //$(".simplebar-scroll-content").scrollTop(0);
+                setTimeout(function(){
+                    setQualityMacroSub(0);
+                }, GM_SETTINGS.max_quality_menu_trigger_each_delay);
+            }
+        } catch (e) {
+            NOMO_DEBUG("ERROR FROM video_quality_max", e);
+        }
+        return true;
+    }
+    function setQualityMacroSub(step){
+        try {
+            // to prevent multiple firing of same event
+            var currTime = Number(new Date());
+            if(currTime - prevTime[step] < cooltime) return;
+            prevTime[step] = currTime;
+
+            video_quality_unbind();
+            PL_MENU_SHOW_DELAY();
+
+            setTimeout(function(){
+                switch(step){
+                case 0:
+                    NOMO_DEBUG("ARRIVE FIRED 0");
+                    $("body").addClass("pl-menu-hide");
+
+                    // 이미 메뉴 존재 시
+                    if ($(menu_elem_selector).length !== 0) {
+                        NOMO_DEBUG("이미 메뉴 존재");
+                        $(setting_elem_selector).trigger("click");
+                    }
+
+                    // 설정 버튼 클릭
+                    // $(document).arrive(setting_elem_selector, { onlyOnce: true, existing: true }, function (elem) {
+                    //     NOMO_DEBUG("click setting button", elem);
+                    //     $(elem).trigger("click");
+                    //     setQualityMacroSub(1);
+                    // });
+                    NOMO_DEBUG("click settings btn", $(setting_elem_selector).first());
+                    $(setting_elem_selector).first().trigger("click");
+
+                    var currQ = $('[data-a-target="player-settings-menu-item-quality"] > div > div:nth-child(2)').text();
+                    NOMO_DEBUG("currQ = ", currQ);
+
+                    setQualityMacroSub(1);
+                    break;
+                    
+                // 화질 버튼 생성 감지
+                case 1:
+                    NOMO_DEBUG("ARRIVE FIRED 1");
+                    use_qob = true;
+                    $(document).arrive(quality_elem_selector, { onlyOnce: true, existing: true }, function (elem) {
+                        $(elem).trigger("click");
+                        setQualityMacroSub(2);
+                    });
+                    break;
+
+                // radio 생성 감지
+                case 2:
+                    NOMO_DEBUG("ARRIVE FIRED 2");
+                    $(document).arrive(max_quality_elem_selector, { onlyOnce: true, existing: true }, function (/*elem*/) {
+                        setQualityMacroSub(3);
+                    });
+                    break;
+
+                // radio 버튼 클릭
+                case 3:
+                    NOMO_DEBUG("ARRIVE FIRED 3");
+                    var $qb = $(max_quality_elem_selector);
+                    var qualityTextOri = [];
+                    var qualityText = [];
+                    var targetIndex = 1;
+                    var targetIndex1st = -1;
+                    var targetIndex2nd = -1;
+
+                    if (use_qob && $qb.length >= 2) {
+                        use_qob = false;
+
+                        var q1st = GM_SETTINGS.max_quality_menu_trigger_prefer_1st.toLowerCase();
+                        var q2nd = GM_SETTINGS.max_quality_menu_trigger_prefer_2nd.toLowerCase();
+                        NOMO_DEBUG(`$qb`, $qb);
+                        NOMO_DEBUG(`TARGET Q 1st:${q1st}, 2nd:${q2nd}`);
+
+                        
+                        for(let i=0;i<$qb.length;i++){
+                            qualityTextOri.push($($qb[i]).closest("div").text());
+                            qualityText.push((qualityTextOri[i]).replace(/\s(.+)/,"").trim());
+                        }
+
+                        if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
+                            if(isClip){
+                                targetIndex = 0;
+                            }
+                            else{
+                                targetIndex = 1;
+                            }
+                        }
+                        else if(q1st == "worst" || q1st == "lowest" || q1st == "low" || q1st == "min"){
+                            targetIndex = $qb.length - 1;
+                        }
+                        else{
+                            for(let i=0;i<$qb.length;i++){
+
+                                if(i !== 0 && !(/p\d{2}/gi.test(qualityText[i]))){
+                                    qualityText[i] = qualityText[i]+"30";
+                                }
+
+                                if(targetIndex1st === -1 && qualityText[i].indexOf(q1st) !== -1){
+                                    targetIndex1st = i;
+                                }
+                                if(targetIndex2nd === -1 && qualityText[i].indexOf(q2nd) !== -1){
+                                    targetIndex2nd = i;
+                                }
+                            }
+
+                            if(targetIndex1st !== -1){
+                                targetIndex = targetIndex1st;
+                            }
+                            else if(targetIndex2nd !== -1){
+                                targetIndex = targetIndex2nd;
+                            }
+                            else{
+                                targetIndex = 1;
+                            }
+
+                            NOMO_DEBUG(`TARGET INDEX: ${targetIndex}:${qualityTextOri[targetIndex]}(${qualityText[targetIndex]})`);
+                        }
+
+
+                        NOMO_DEBUG("FINAL TARGET INDEX:", targetIndex);
+                        var target = $(max_quality_elem_selector)[targetIndex];
+
+                        NOMO_DEBUG("try to click final target", qualityText[targetIndex]);
+                        prevQ = qualityText[targetIndex];
+                        $("main div.simplebar-scroll-content").addClass("smoothScroll");
+                        if(target.checked || target.hasAttribute("checked")){
+                            NOMO_DEBUG("already selected. skip click");
+                        }
+                        else{
+                            NOMO_DEBUG("try to click target");
+                            target.click();
+                        }
+
+                        if($('[data-test-selector="main-menu"]').length > 0){
+                            NOMO_DEBUG("there is setting window, click", $(setting_elem_selector));
+                            $(setting_elem_selector).first().trigger("click");
+
+                            // to prevent scroll related bug
+                            setTimeout(function(){
+                                $("main div.simplebar-scroll-content").removeClass("smoothScroll");
+                            }, GM_SETTINGS.max_quality_menu_trigger_each_delay);
+                        }
+                        $("body").removeClass("pl-menu-hide");
+                        unsafeWindow.$ = $;
+                        clearTimeout(SETTIMEOUT_PL_MENU);
+                        video_quality_unbind();
+
+                        // 강제 화질 변경 감지
+                        setTimeout(function(){
+                            var $icon_spin = $(".pl-settings-icon--spin");
+                            if($icon_spin.length == 0){
+                                return;
+                            }
+                            NOMO_DEBUG("강제 화질 변경 감지");
+                            var $pause_play_button = $(play_pause_selector);
+                            if($pause_play_button.length !== 0){
+                                $(play_pause_selector).click();
+                                setTimeout(function(){
+                                    $(play_pause_selector).click();
+                                },50);
+                            }
+                        },1000);
+                    }
+                    else{
+                        NOMO_DEBUG("use_qob", use_qob, "$qb", $qb);
+                    }
+                    break;
+                    
+                }
+            }, GM_SETTINGS.max_quality_menu_trigger_each_delay);
+        } catch (e) {
+            NOMO_DEBUG("ERROR FROM setQualityMacroSub", e);
+        }
+    }
+
 
     // 설정 메뉴 추가 및 관리
     function openSettingsMenu(){
