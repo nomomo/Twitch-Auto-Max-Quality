@@ -30,6 +30,10 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.4.0 (2023-02-19)
+
+- The script version update was missing, only the version was updated.
+
 ### 0.4.0 (2023-02-11)
 
 - "Only source quality method" is renewed as "Only the quality you want method"
