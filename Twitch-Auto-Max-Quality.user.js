@@ -42,7 +42,7 @@
 "use strict";
 (async () => {
     console.log("[TAMQ]   RUNNING TWITCH AUTO MAX QUALITY", document.location.href);
-    var DEBUG = true;//await GM.getValue("DEBUG", false);
+    var DEBUG = await GM.getValue("DEBUG", false);
 
     ////////////////////////////////////////////////////////////////////////////////////
     // libs
