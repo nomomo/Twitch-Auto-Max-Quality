@@ -30,7 +30,7 @@ nomotg@gmail.com
 
 ## Change log
 
-### 0.4.1 (2023-02-19)
+### 0.4.1 (2023-03-23)
 
 - Fixed an issue where 160p was exposed with source quality in certain environments when using the "Only the quality you want method" (Thanks Taskmant!)
 
