@@ -5,10 +5,10 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/nomomo/Twitch-Auto-Max-Quality/blob/master/README.md)
 -->
 
+> **Important: As a Korean developer, I no longer plan to actively maintain this script as Twitch has shut down operations in South Korea. Check [this article](https://blog.twitch.tv/en/2023/12/05/an-update-on-twitch-in-korea/) for more information.**
+
 - Always start playing live video with the quality you want on twitch.tv.
 - Prevent automatic change of video quality when tab is disabled.
-
-**Important: As a Korean developer, I no longer plan to actively maintain this script as Twitch has shut down operations in South Korea. Check [this article](https://blog.twitch.tv/en/2023/12/05/an-update-on-twitch-in-korea/) for more information.**
 
 ## Install
 
