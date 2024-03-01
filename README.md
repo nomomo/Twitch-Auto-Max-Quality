@@ -8,6 +8,8 @@
 - Always start playing live video with the quality you want on twitch.tv.
 - Prevent automatic change of video quality when tab is disabled.
 
+**Important: As a Korean developer, I no longer plan to actively maintain this script as Twitch has shut down operations in South Korea. Check [this article](https://blog.twitch.tv/en/2023/12/05/an-update-on-twitch-in-korea/) for more information.**
+
 ## Install
 
 ### STEP 1. ScriptManager
@@ -29,6 +31,10 @@ This script may not work properly on script managers other than Tampermonkey.
 nomotg@gmail.com
 
 ## Change log
+
+### 0.4.1b (2024-03-01)
+
+- I have set the "Only the quality you want method" to default. New users installing the script will now only see the maximum quality. Existing users will not be affected.
 
 ### 0.4.1 (2023-03-23)
 
