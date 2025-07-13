@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Twitch-Auto-Max-Quality
 // @namespace   Twitch-Auto-Max-Quality
-// @version     0.4.1
+// @version     0.5.0
 // @author      Nomo
 // @description Always start playing live video with source quality on twitch.tv
 // @supportURL  https://github.com/nomomo/Twitch-Auto-Max-Quality/issues
@@ -114,36 +114,20 @@
                 ko:"\"원하는 화질\"을 제외한 모든 비디오 품질을 제거합니다. 따라서 Twitch 플레이어가 화질을 \"자동\"으로 설정하더라도, 선택가능한 화질은 하나밖에 없으므로 자연스럽게 원하는 화질로 재생됩니다. <strong>이 옵션은 특히 언제나 최고 품질로 비디오를 보고 싶은 유저에게 권장됩니다.</strong><br />주의: 이 옵션을 활성화하면 다른 스크립트(예: TwitchAdSolution)와 충돌하여 여러 문제가 발생할 수도 있습니다. 이 경우 이 옵션을 끄고 다른 방법을 사용하세요. 옵션 수정 후 새로 고침 필요."
             }
         },
-        only_source_quality_type: {
-            category:"etc",
-            depth: 3,
-            type: "combobox",
-            value: "0",
-            title:"Options",
-            desc: {
-                en:"Type 0: Removes all other selectable video quality except the quality you want.<br />Type 1: Overwrite all selectable video quality with the quality you want.<br />Legacy: Removes all other selectable video quality except the quality you want & show \"(source)\" text if selected quality is source.",
-                ko:`Type 0: 원하는 화질을 제외한 나머지를 모두 제거<br />Type 1: 모든 화질을 원하는 화질로 덮어쓰기<br />Legacy: 최고 화질을 제외한 나머지를 모두 제거 & 선택된 화질이 원본일 경우 "(원본)" 글자를 표시`
-            },
-            options:{
-                "0":{title:"0"},
-                "1":{title:"1"},
-                "1000":{title:"Legacy"}
-            }
-        },
         only_source_quality_prefer_1st : {
             category:"general", depth:3, type: "text", value: "best",
             title:{en:"1st preferred quality for only the quality you want method", ko:"가장 선호하는 비디오 품질 (오로지 당신이 원하는 화질만 방법)"},
             desc:{
-                en:`(Choose one of the following: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
-                ko:`(다음 중 하나를 선택하여 입력하세요: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+                en:`(Choose one of the following: <strong>best</strong>, <strong>worst</strong>, 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: <strong>best</strong>, <strong>worst</strong>, 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
             }
         },
         only_source_quality_prefer_2nd : {
             category:"general", depth:3, type: "text", value: "720p",
             title:{en:"2nd preferred quality for only the quality you want method", ko:"두 번째로 선호하는 비디오 품질 (오로지 당신이 원본 화질만 방법)"},
             desc:{
-                en:`(Choose one of the following: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
-                ko:`(다음 중 하나를 선택하여 입력하세요: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+                en:`(Choose one of the following: 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
             }
         },
         only_source_quality_clip: {
@@ -166,16 +150,16 @@
             category:"general", depth:3, type: "text", value: "best",
             title:{en:"1st preferred quality for simulate settings button method", ko:"가장 선호하는 비디오 품질 (설정 버튼 매크로 방법)"},
             desc:{
-                en:`(Choose one of the following: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
-                ko:`(다음 중 하나를 선택하여 입력하세요: <strong>best</strong>, <strong>worst</strong>, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+                en:`(Choose one of the following: <strong>best</strong>, <strong>worst</strong>, 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: <strong>best</strong>, <strong>worst</strong>, 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
             }
         },
         max_quality_menu_trigger_prefer_2nd : {
             category:"general", depth:3, type: "text", value: "720p",
             title:{en:"2nd preferred quality for simulate settings button method", ko:"두 번째로 선호하는 비디오 품질 (설정 버튼 매크로 방법)"},
             desc:{
-                en:`(Choose one of the following: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
-                ko:`(다음 중 하나를 선택하여 입력하세요: 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
+                en:`(Choose one of the following: 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`,
+                ko:`(다음 중 하나를 선택하여 입력하세요: 2160p, 1440p, 1080p, 720p, 720p60, 720p30, 480p, 360p, 160p, ...)`
             }
         },
         max_quality_menu_trigger_each_delay : {
@@ -226,13 +210,6 @@
             under_dev: true,
             category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
             title: {en:"Disable WebRTC", ko:"WebRTC 비활성화"},
-            desc: {en:"", 
-                ko:""}
-        },
-        disable_P2P: {
-            under_dev: true,
-            category: "TAMQLabs", depth: 1, type: "checkbox", value: false,
-            title: {en:"Disable P2P", ko:"P2P 비활성화"},
             desc: {en:"", 
                 ko:""}
         }
@@ -340,7 +317,7 @@
     
     ////////////////////////////////////////////////////////////////////////////////////
     // only_source_quality method
-    if((GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality) || GM_SETTINGS.disable_P2P){
+    if(GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality){
 
         // only_source_quality method for live stream and vod
         var realWorker = unsafeWindow.Worker;
@@ -381,29 +358,13 @@
                             var m3u8_text = await m3u8_fetch.text();
                             NOMO_DEBUG("\\n", input, "\\n", (new Date()), "\\n", m3u8_text);
 
-                            ///////////////////////////////////////////////////
-                            // disable_P2P
-                            if(DEBUG_WORKER2){
-                                if(m3u8_text.indexOf(",P2P=1") !== -1){
-                                    NOMO_DEBUG("P2P ON");
-                                }
-                                else{
-                                    NOMO_DEBUG("P2P OFF");
-                                }
-                            }
-                            if(${GM_SETTINGS.disable_P2P}){
-                                NOMO_DEBUG("disable_P2P");
-                                m3u8_text = m3u8_text.replace(",P2P=1","");
-                            }
-
-                            // only disable_P2P
-                            var osq_enabled = Boolean(${String((GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality))});
+                            let osq_enabled = Boolean(${String((GM_SETTINGS.max_quality_start && GM_SETTINGS.only_source_quality))});
                             NOMO_DEBUG("osq_enabled", osq_enabled);
                             if(!osq_enabled){
-                                NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text);
-                                var m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
-                                var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
-                                var new_arg = arguments;
+                                NOMO_DEBUG("[osq disabled] apply original m3u8_text", m3u8_text);
+                                let m3u8_blob = new Blob([m3u8_text], {type: 'text/plain'});
+                                let m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                let new_arg = arguments;
                                 new_arg[0] = m3u8_blob_url;
 
                                 // REVOKE after 10s
@@ -413,145 +374,96 @@
 
                             ///////////////////////////////////////////////////
                             // only_source_quality
-                            // find target quality index
-                            var type = ${GM_SETTINGS.only_source_quality_type};
-                            var remove_chunked = true;
-                            if(type == 1000){
-                                type = 0;
-                                remove_chunked = false;
-                            }
-                            var found = false;
-                            
-                            var regex = /(\\n#EXT-X-MEDIA:.+\\n.+\\n.+\\.m3u8)/gi;
-                            var mat = m3u8_text.match(regex);
-                            NOMO_DEBUG("mat", mat);
-                            found = mat !== null;
-                            if(mat == null) mat = [];   // error case
-
-                            var q1st = ${"\""+GM_SETTINGS.only_source_quality_prefer_1st.toLowerCase()+"\""};
-                            var q2nd = ${"\""+GM_SETTINGS.only_source_quality_prefer_2nd.toLowerCase()+"\""};
-                            NOMO_DEBUG("TARGET Q 1st: " + q1st + ", 2nd:" + q2nd);
-                            
-                            var qualityText = [];
-                            var targetIndex = -1;
-                            var targetIndex1st = -1;
-                            var targetIndex2nd = -1;
-        
-                            for(let i=0;i<mat.length;i++){
-                                qualityText.push(mat[i].match(/NAME=(".+")/)[1]);
-                            }
-
-                            if(q1st == "best" || q1st == "chunked" || q1st == "max" || q1st == "highest" || q1st == "high"){
-                                targetIndex = 0;
-                            }
-                            else if(q1st == "worst" || q1st == "lowest" || q1st == "low" || q1st == "min"){
-                                targetIndex = mat.length - 1;
-                            }
-                            else{
-                                for(let i=0;i<mat.length;i++){
-
-                                    if(i !== 0 && !(/p\\d{2}/gi.test(qualityText[i]))){
-                                        qualityText[i] = qualityText[i]+"30";
-                                    }
-
-                                    if(targetIndex1st === -1 && qualityText[i].indexOf(q1st) !== -1){
-                                        targetIndex1st = i;
-                                    }
-                                    if(targetIndex2nd === -1 && qualityText[i].indexOf(q2nd) !== -1){
-                                        targetIndex2nd = i;
-                                    }
-                                }
-
-                                if(targetIndex1st !== -1){
-                                    targetIndex = targetIndex1st;
-                                }
-                                else if(targetIndex2nd !== -1){
-                                    targetIndex = targetIndex2nd;
-                                }
-                                else{
-                                    targetIndex = 1;
-                                }
-                            }
-
-                            NOMO_DEBUG("TARGET INDEX:" + targetIndex + "(" + qualityText[targetIndex] + ")");
-                            if(targetIndex < 0) targetIndex = 0;
-
                             ///////////////////////////////////////////////////
-                            // modify m3u8 content
-                            let m3u8_text_new = "";
-                            if(found && type !== 100){
-                                // type0: remain only one
-                                if(type == 0){
-                                    m3u8_text_new = m3u8_text.split("\\n#EXT-X-MEDIA:")[0];
-
-                                    // remove "(source)" text
-                                    if(targetIndex == 0 && remove_chunked){
-                                        var mat0_name_ori = mat[0].match(/NAME=(".+")/)[1];
-                                        var mat0_name = mat0_name_ori.replace(/\\s?\\(source\\)/i, "");
-                                        NOMO_DEBUG("mat0_name", mat0_name);
-                                        var mat0_new = mat[0].replace(mat0_name_ori,mat0_name).replace(/"chunked"/gi, mat0_name);
-                                        m3u8_text_new += mat0_new;
-                                    }
-                                    else{
-                                        m3u8_text_new += mat[targetIndex];
-                                    }
-                                }
-                                // type1: replace all
-                                else {
-                                    m3u8_text_new = m3u8_text;
-                                    for(let i=0; i<mat.length; ++i){
-                                        if(i == targetIndex) continue;
-                                        m3u8_text_new = m3u8_text_new.replace(mat[i], mat[targetIndex]);
-                                    }
-                                }
-
-                                NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text_new);
-                                var m3u8_blob = new Blob([m3u8_text_new], {type: 'text/plain'});
-                                var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
-                                var new_arg = arguments;
-                                new_arg[0] = m3u8_blob_url;
-
-                                // REVOKE after 10s
-                                setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url);},10000);
-                                return originalFetch2.apply(this, new_arg);
+                            // Separate lines and extract headers
+                            const lines = m3u8_text.split('\\n');
+                            let headerEnd = 0;
+                            while (headerEnd < lines.length && !lines[headerEnd].startsWith('#EXT-X-MEDIA')) {
+                                headerEnd++;
                             }
-                            // type 100: test code
-                            else {
-                                // return with blob
-                                var regexMasterPlaylist = /(https:\\/\\/.+\\.m3u8)/gi;
-                                var masterplaylistmatch = m3u8_text.match(regexMasterPlaylist);
+                            const headerLines = lines.slice(0, headerEnd);
 
-                                var regexBandWidth = /(BANDWIDTH=[0-9]+)/gi;
-                                var bandwidthmatch = m3u8_text.match(regexBandWidth);
-
-                                var regexCodecs = /(CODECS=\\".+\\")/gi;
-                                var codecsmatch = m3u8_text.match(regexCodecs);
-
-                                NOMO_DEBUG("masterplaylistmatch", masterplaylistmatch);
-                                NOMO_DEBUG("bandwidthmatch", bandwidthmatch);
-                                NOMO_DEBUG("codecsmatch", codecsmatch);
-
-                                found = masterplaylistmatch !== null && bandwidthmatch !== null && codecsmatch !== null;
-                                if(found){
-                                    var firstm3u8 = masterplaylistmatch[0];
-                                    m3u8_text = m3u8_text.replace(regexMasterPlaylist,firstm3u8);
-                                    m3u8_text = m3u8_text.replace(regexBandWidth, bandwidthmatch[0]);
-                                    m3u8_text = m3u8_text.replace(regexCodecs, codecsmatch[0]);
-
-                                    NOMO_DEBUG("CONVERTED", m3u8_text);
-                                    var m3u8_blob = new Blob([m3u8_text], {
-                                        type: 'text/plain'
-                                    });
-                                    var m3u8_blob_url = URL.createObjectURL(m3u8_blob);
-                                    var new_arg = arguments;
-                                    new_arg[0] = m3u8_blob_url;
-
-                                    // REVOKE after 10s
-                                    setTimeout(function(){URL.revokeObjectURL(m3u8_blob_url)},10000);
-                                    return originalFetch2.apply(this, new_arg);
+                            // Collect STREAM-INF + URI + MEDIA pairs
+                            const entries = [];
+                            for (let i = headerEnd; i < lines.length; i++) {
+                                if (i + 2 <= lines.length && lines[i].startsWith('#EXT-X-MEDIA') && lines[i + 1].startsWith('#EXT-X-STREAM-INF') && lines[i + 2].startsWith('https')) {
+                                    const mediaLine = lines[i];
+                                    const infoLine  = lines[i+1];
+                                    const uriLine   = lines[i+2];
+                                    const bwMatch   = infoLine.match(/BANDWIDTH=(\\d+)/);
+                                    const bandwidth = bwMatch ? parseInt(bwMatch[1], 10) : 0;
+                                    entries.push({ mediaLine, infoLine, uriLine, bandwidth });
+                                    i = i + 2;
                                 }
                             }
 
+                            // error case
+                            if(entries.length == 0){
+                                NOMO_DEBUG("entries.length == 0");
+                                let m3u8_blob    = new Blob([m3u8_text], {type: 'text/plain'});
+                                const m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                                const args = arguments;
+                                args[0]     = m3u8_blob_url;
+                                setTimeout(() => URL.revokeObjectURL(m3u8_blob_url), 10000);
+                                return originalFetch2.apply(this, args);
+                            }
+
+                            // The default is no longer sorted by quality
+                            // Sort bandwidth in descending order
+                            entries.sort((a, b) => b.bandwidth - a.bandwidth);
+                            NOMO_DEBUG("sorted entries:", entries);
+
+                            // Get quality name from mediaLine and infoLine
+                            const cleanLabels = [];
+                            for (let entry of entries) {
+                                // GROUP-ID
+                                const grpMatch = entry.infoLine.match(/VIDEO="([^"]+)"/);
+                                const grp = grpMatch ? grpMatch[1].toLowerCase() : '';
+                                let nm = entry.mediaLine.match(/NAME="([^"]+)"/);
+                                cleanLabels.push((grp + " " + nm).trim());
+                            }
+
+                            // Find target entry from q1 and q2
+                            let q1 = ${"\""+GM_SETTINGS.only_source_quality_prefer_1st.toLowerCase()+"\""};
+                            let q2 = ${"\""+GM_SETTINGS.only_source_quality_prefer_2nd.toLowerCase()+"\""};
+                            NOMO_DEBUG("TARGET Q1:", q1, " Q2:", q2);
+
+                            let chosen;
+                            const highs = ["best","max","chunk","chunked","highest","high"];
+                            const lows  = ["worst","min","lowest","low"];
+
+                            if (highs.includes(q1)) {
+                                chosen = entries[0];
+                            } else if (lows.includes(q1)) {
+                                chosen = entries[entries.length - 1];
+                            } else {
+                                const i1 = cleanLabels.findIndex(l => l.includes(q1));
+                                const i2 = cleanLabels.findIndex(l => l.includes(q2));
+                                if (i1 !== -1)      chosen = entries[i1];
+                                else if (i2 !== -1) chosen = entries[i2];
+                                else                chosen = entries[0];    // if not found, choose best one
+                            }
+
+                            NOMO_DEBUG("chosen:", chosen);
+                            NOMO_DEBUG("headerLines:", headerLines);
+
+                            // 5) New m3u8 (media + stream-inf + uri)
+                            const outLines = [
+                                ...headerLines,
+                                chosen.mediaLine,
+                                chosen.infoLine,
+                                chosen.uriLine
+                            ].filter(Boolean);
+                            const m3u8_text_new = outLines.join('\\n');
+                            NOMO_DEBUG("CONVERTED m3u8_text", m3u8_text_new);
+
+                            // 6) blob 생성 후 fetch 재호출
+                            let m3u8_blob    = new Blob([m3u8_text_new], {type: 'text/plain'});
+                            const m3u8_blob_url = URL.createObjectURL(m3u8_blob);
+                            const args = arguments;
+                            args[0]     = m3u8_blob_url;
+                            setTimeout(() => URL.revokeObjectURL(m3u8_blob_url), 10000);
+                            return originalFetch2.apply(this, args);
                         }
 
                         return originalFetch2.apply(this, arguments);
@@ -1127,7 +1039,7 @@
         NOMO_DEBUG("DOCUMENT_READY");
         if (typeof GM_registerMenuCommand === "function") {
             var menustr = "Open Settings Menu";
-            console.log(GM_SETTINGS);
+            NOMO_DEBUG(GM_SETTINGS);
             if(GM_SETTINGS !== undefined && GM_SETTINGS.Lang !== undefined){
                 if(GM_SETTINGS.Lang === "ko"){
                     menustr = "설정 메뉴 열기";

@@ -32,6 +32,12 @@ nomotg@gmail.com
 
 ## Change log
 
+### 0.5.0 (2025-07-13)
+
+- The "Only the quality you want" method now supports 2160p and 1440p.
+- The "Type option" has been removed from the "Only the quality you want" method. It now always removes all other selectable video qualities except the one you want.
+- The "Disable P2P" option in the Lab has been removed.
+
 ### 0.4.1b (2024-03-01)
 
 - I have set the "Only the quality you want method" to default. New users installing the script will now only see the maximum quality. Existing users will not be affected.
